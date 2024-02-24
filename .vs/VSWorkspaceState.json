@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\DentalLabDbContext",
+    "\\Dto",
+    "\\Repository",
+    "\\Service",
+    "\\Service\\Implementation",
+    "\\Service\\Interface"
+  ],
+  "SelectedNode": "\\Service\\Implementation\\ConsultationService.cs",
+  "PreviewInSolutionExplorer": false
+}
