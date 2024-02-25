@@ -8,7 +8,7 @@ namespace DentalLabConsoleApplicationWithAdo.Models.Entities
 {
     public class Doctor : BaseEntity
     {
-        public int Id { get; set; }
+        //public int Id { get; set; }
         public int ProfileId {  get; set; }
         public string LicenseNumber { get; set; }
         public string Education { get; set; }

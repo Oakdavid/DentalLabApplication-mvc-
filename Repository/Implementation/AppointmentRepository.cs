@@ -14,15 +14,13 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
     {
         public void Create(Appointment obj)
         {
-            var refNumber = obj.RefNumber + $"RDT/DENTAL/00/{new Random().Next(001, 100)}";
-            var cardNumber = obj.CardNo + $"RDT/CARDNO/00/{new Random().Next(50, 100)}";
-            var drNumber = $"RDT/DOCTOR/{new Random().Next(3, 5)}";    
+             
             var tinyDeleted = obj.IsDeleted ? 1 : 0;
             using (MySqlConnection conn = new(DentalLabDbContext.connections))
             {
                 conn.Open();
                 string insertQuery = $"INSERT INTO appointment (RefNo, CardNo, DrNumber, PatientComplain, DateOfAppointment, AppointmentStatus, AppointmentType, IsDeleted) " +
-                $"VALUES ('{refNumber}', '{cardNumber}', '{drNumber}', '{obj.PatientComplain}', '{obj.DateOfAppointment.ToString("yyyy-MM-dd / hh-mm-ss")}'," +
+                $"VALUES ('{obj.RefNumber}', '{obj.CardNo}', '{obj.DrNumber}', '{obj.PatientComplain}', '{obj.DateOfAppointment.ToString("yyyy-MM-dd / hh-mm-ss")}'," +
                 $"'{obj.AppointmentStatus}','{obj.AppointmentType}', '{tinyDeleted}')";
 
                 var command = new MySqlCommand(insertQuery, conn);
@@ -63,6 +61,35 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
                         
                     };
                     
+                }
+            }
+            return null;
+        }
+
+
+        public Appointment GetByCardNo(string cardNo)
+        {
+            using (MySqlConnection conn = new(DentalLabDbContext.connections))
+            {
+                conn.Open();
+                var command = new MySqlCommand($"select * from appointment where CardNo = '{cardNo}'", conn);
+                var appointmentReader = command.ExecuteReader();
+                while (appointmentReader.Read())
+                {
+                    return new Appointment
+                    {
+                        Id = (int)appointmentReader["Id"],
+                        RefNumber = appointmentReader["RefNo"].ToString(),
+                        CardNo = appointmentReader["CardNo"].ToString(),
+                        DrNumber = appointmentReader["DrNumber"].ToString(),
+                        PatientComplain = appointmentReader["PatientComplain"].ToString(),
+                        DateOfAppointment = DateTime.Parse(appointmentReader["DateOfAppointment"].ToString()),
+                        AppointmentStatus = Models.Enum.AppointmentStatus.Initialized,
+                        AppointmentType = Models.Enum.AppointmentType.PhysicalAppointment,
+                        IsDeleted = false,
+
+                    };
+
                 }
             }
             return null;

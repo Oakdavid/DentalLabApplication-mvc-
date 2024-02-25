@@ -1,9 +1,11 @@
 ﻿using DentalLabConsoleApplicationWithAdo.Dto;
+using DentalLabConsoleApplicationWithAdo.Models.Entities;
 using DentalLabConsoleApplicationWithAdo.Repository.Interface;
 using DentalLabConsoleApplicationWithAdo.Service.Implementation;
 using DentalLabConsoleApplicationWithAdo.Service.Interface;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -22,7 +24,7 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
         public void Patient()
         {
             Console.WriteLine("Press 1 to view all doctor service \nPress 2 to book an Appointment " +
-                "\nPress 3 to view doctors report\nPress 4 to view appointment \nPress 0 to Logout");
+                "\nPress 3 to view appointment\nPress 4 to view doctors report \nPress 0 to Logout"); 
             string options = Console.ReadLine();
 
             if (options == "1")
@@ -39,13 +41,14 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
 
             else if (options == "3")
             {
-                ViewDoctorsReports();       
+                ViewAppointment();
                 Patient();
             }
 
             else if (options == "4")
             {
-                Console.WriteLine("work in progress");
+                ViewDoctorsReports();
+                Patient();
                 Patient();
             }
             else if (options == "0")
@@ -124,7 +127,7 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
             }
         }
 
-        public void ViewDoctorsReports()                           // 3
+        public void ViewDoctorsReports()                           // 4
         {
             var patient = _patientService.GetPatientId(Main.LoggedInId);
 
@@ -150,12 +153,12 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
         {
             Console.WriteLine("Enter your complain");
             string patientComplain = Console.ReadLine();
-
+            var currentPatient = _patientService.GetPatientId(Main.LoggedInId);
             AppointmentRequestModel appointmentRequestModel = new AppointmentRequestModel()
             {
                 PatientComplain = patientComplain,
                 AppointmentType = Models.Enum.AppointmentType.PhysicalAppointment,
-                DateOfAppointment = DateTime.Now,
+                CardNo = currentPatient.PatientCardNo,
             };
             _appointmentService.Create(appointmentRequestModel);
             Console.WriteLine();
@@ -163,7 +166,12 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
 
         public void ViewAppointment()
         {
-
+            var patients = _patientService.GetPatientId(Main.LoggedInId);
+            var patientAppointment = _appointmentService.ViewAppointment(patients.PatientCardNo);
+            if(patientAppointment != null)
+            {
+                Console.WriteLine($"The date of Appointment is {patientAppointment.DateOfAppointment}");
+            }
         }
     }
 }

@@ -4,10 +4,11 @@
     "\\DentalLabDbContext",
     "\\Dto",
     "\\Repository",
+    "\\Repository\\Interface",
     "\\Service",
     "\\Service\\Implementation",
     "\\Service\\Interface"
   ],
-  "SelectedNode": "\\Service\\Implementation\\ConsultationService.cs",
+  "SelectedNode": "\\Service\\Implementation\\ProfileService.cs",
   "PreviewInSolutionExplorer": false
 }

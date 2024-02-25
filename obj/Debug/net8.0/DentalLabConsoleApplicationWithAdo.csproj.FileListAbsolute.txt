@@ -63,3 +63,4 @@ C:\Users\HP\Documents\VS_Application\DentalLabConsoleApplicationWithAdo\obj\Debu
 C:\Users\HP\Documents\VS_Application\DentalLabConsoleApplicationWithAdo\obj\Debug\net8.0\DentalLabConsoleApplicationWithAdo.pdb
 C:\Users\HP\Documents\VS_Application\DentalLabConsoleApplicationWithAdo\obj\Debug\net8.0\DentalLabConsoleApplicationWithAdo.genruntimeconfig.cache
 C:\Users\HP\Documents\VS_Application\DentalLabConsoleApplicationWithAdo\obj\Debug\net8.0\ref\DentalLabConsoleApplicationWithAdo.dll
+C:\Users\HP\Documents\VS_Application\DentalLabConsoleApplicationWithAdo\obj\Debug\net8.0\DentalLabConsoleApplicationWithAdo.sourcelink.json

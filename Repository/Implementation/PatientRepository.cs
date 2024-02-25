@@ -20,8 +20,8 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
                 using (MySqlConnection conn = new(DentalLabDbContext.connections))
                 {
                     conn.Open();
-                    string insertQuery = $"INSERT INTO patient (CardNo,ProfileId, IsDeleted) " +
-                    $"VALUES ('{cardNumber}','{obj.ProfileId}','{tinyDeleted}')";
+                    string insertQuery = $"INSERT INTO patient (CardNo,ProfileId, LicenseNumber, IsDeleted) " +
+                    $"VALUES ('{cardNumber}','{obj.ProfileId}','{obj.DrLicenseNumber}','{tinyDeleted}')";
 
                     var command = new MySqlCommand(insertQuery, conn);
 
@@ -53,6 +53,7 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
                         Id = (int)patientReader["Id"],
                         CardNo = patientReader["CardNo"].ToString(),
                         ProfileId = (int)patientReader["ProfileId"],
+                        DrLicenseNumber = patientReader["DrLicenseNumber"].ToString(),
                         IsDeleted = false,
                         
                     };
@@ -77,6 +78,7 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
                         Id = (int)patientReader["Id"],
                         CardNo = patientReader["CardNo"].ToString(),
                         ProfileId = (int)patientReader["ProfileId"],
+                        DrLicenseNumber = patientReader["DrLicenseNumber"].ToString(),
                         IsDeleted = Convert.ToBoolean(patientReader["IsDeleted"])
                     });
                 }
@@ -99,6 +101,7 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
                         Id = (int)patientReader["Id"],
                         CardNo = patientReader["CardNo"].ToString(),
                         ProfileId = (int)patientReader["ProfileId"],
+                        DrLicenseNumber = patientReader["DrLicenseNumber"].ToString(),
                         IsDeleted = Convert.ToBoolean(patientReader["IsDeleted"])
                     };
                 }
@@ -121,6 +124,7 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
                         Id = (int)patientReader["Id"],
                         CardNo = patientReader["CardNo"].ToString(),
                         ProfileId = (int)patientReader["ProfileId"],
+                        DrLicenseNumber = patientReader["DrLicenseNumber"].ToString(),
                         IsDeleted = Convert.ToBoolean(patientReader["IsDeleted"])
                     };
                 }

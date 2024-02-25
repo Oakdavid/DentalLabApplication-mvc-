@@ -12,7 +12,7 @@ namespace DentalLabConsoleApplicationWithAdo
         string connection = "Server = localhost; user = root; password = David1234567890";
        public static string connections = "Server = localhost; user = root; password = David1234567890; database = DentalLabDb";
 
-        string createAppointment = "create table if not exists Appointment(Id int auto_increment primary key, RefNo varchar(50), CardNO varchar(50), DrNumber varchar(50), PatientComplain varchar(500), DateOfAppointment datetime, AppointmentType Enum('VirtualAppointment', 'PhysicalAppointment'), AppointmentStatus Enum('Initialized', 'Assigned'),IsDeleted tinyint)";
+        string createAppointment = "create table if not exists Appointment(Id int auto_increment primary key, RefNo varchar(50), CardNO varchar(50), DrNumber varchar(50), PatientComplain varchar(500), DrLicenseNumber varchar(50), DateOfAppointment datetime, AppointmentType Enum('VirtualAppointment', 'PhysicalAppointment'), AppointmentStatus Enum('Initialized', 'Assigned'),IsDeleted tinyint)";
 
         string createPatient = "create table if not exists Patient(Id int auto_increment primary key, ProfileId int, CardNo varchar(50), IsDeleted tinyint,foreign KEY (ProfileId) references Profile(Id))";
 
@@ -50,7 +50,7 @@ namespace DentalLabConsoleApplicationWithAdo
             createTables(createDoctor);
             createTables(createAppointment);
             createTables(createReport);
-            createTables(createHeadDoctor);
+            //createTables(createHeadDoctor);
 
             Console.WriteLine("Tables created successfully");
         }

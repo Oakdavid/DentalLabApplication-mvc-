@@ -10,6 +10,7 @@ namespace DentalLabConsoleApplicationWithAdo.Models.Entities
     {
         public int ProfileId { get; set; }
         public string CardNo { get; set; }
+        public string DrLicenseNumber { set; get; }
 
     }
 }

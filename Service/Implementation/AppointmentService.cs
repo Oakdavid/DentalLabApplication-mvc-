@@ -24,7 +24,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
             {
 
                 RefNumber = $"RDT/DENTAL/00/{new Random().Next(001, 100)}",
-                CardNo = $"RDT/CARDNO/00/{new Random().Next(50, 100)}",
+                CardNo = obj.CardNo,
                 DrNumber = $"RDT/DOCTOR/{new Random().Next(3, 5)}",
                 PatientComplain = obj.PatientComplain,
                 DateOfAppointment = DateTime.UtcNow,
@@ -87,7 +87,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
 
         public AppointmentDto ViewAppointment(string patientCardno)
         {
-            var appointment = _appointmentRepository.Get(patientCardno);
+            var appointment = _appointmentRepository.GetByCardNo(patientCardno);
             if (appointment != null && !appointment.IsDeleted)
             {
                 return new AppointmentDto
@@ -95,6 +95,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                     Id = appointment.Id,
                     DateOfAppointment = appointment.DateOfAppointment
                 };
+
             }
             Console.WriteLine($"Appointment with reference no {patientCardno} does not exist.");
             return null;

@@ -19,9 +19,9 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
     public class ReportService : IReportService
     {
         IReportRepository _reportRepository = new ReportRepository();
-        IProfileRepository _profileRepository = new ProfileRepository();           // coming back to check this
-        IPatientRepository _patientRepository = new PatientRepository();           // coming back to check this
-                                                                                // coming back to check this
+        IProfileRepository _profileRepository = new ProfileRepository();      
+        IPatientRepository _patientRepository = new PatientRepository();          
+                                                                            
         public ReportDto Create(ReportRequestModelDto reports)
         {
             var profile = _profileRepository.GetProfileByUserId(Main.LoggedInId);
@@ -38,7 +38,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
             Report newReport = new Report()
             {
                 ReportContent = reports.ReportContent,
-                PatientCardNo = patient.CardNo
+                PatientCardNo = patient.CardNo              // more work needs to be done
             };
             _reportRepository.Create(newReport);
 

@@ -20,12 +20,6 @@ namespace DentalLabConsoleApplicationWithAdo.Models.Entities
         public string ReportContent { get; set; }
         public AppointmentType AppointmentType { get; set; }          // appointment type
 
-        public string Location { get; set; }        // just added this
-    }          // head dosctor will asssign appointment to doctors
-                // doctor can view all the appointment he as.
-                // doctor will now approve the date
-                // doctor can send a report...        
-                // doctor can now send a message that appointment as been fixed
-                // a patient can now view his or her report.
-
-}
+        public string Location { get; set; }
+    }
+}       

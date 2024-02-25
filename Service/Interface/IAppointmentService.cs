@@ -1,5 +1,6 @@
 ﻿using DentalLabConsoleApplicationWithAdo.Dto;
 using DentalLabConsoleApplicationWithAdo.Models;
+using DentalLabConsoleApplicationWithAdo.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Interface
     {
         AppointmentDto Create(AppointmentRequestModel obj);
         AppointmentDto Get(string refNumber);
+        public AppointmentDto ViewAppointment(string patientCardno);
         List<AppointmentDto> GetAll();
         public void ToString(AppointmentDto obj);
     }

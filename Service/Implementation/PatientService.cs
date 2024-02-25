@@ -18,6 +18,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
         IPatientRepository _patientRepository = new PatientRepository();
         IUserRepository _userRepository = new UserRepository();
         IProfileRepository _profileRepository = new ProfileRepository();
+        IDoctorRepository  _doctorRepository = new DoctorRepository();
 
         public PatientDto Create(PatientRequestModelDto obj)
         {
@@ -48,10 +49,12 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
             };
             _profileRepository.Create(profile);
 
+            var CardNo = $"RDT/CARDNO/00/{new Random().Next(50, 100)}";            //moved
             Patient patient = new Patient()
             {
-                CardNo = obj.PatientCardNo,
+                CardNo = CardNo,
                 ProfileId = _profileRepository.GetProfileId(),
+                DrLicenseNumber = AssignedDoctor(CardNo)
             };
             _patientRepository.Create(patient);
 
@@ -86,13 +89,12 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                         Contact = patientProfile.Contact,
                         DateOfBirth = patientProfile.DateOfBirth,
                         Gender = patientProfile.Gender,
-
+                        LicenseNumber = patient.DrLicenseNumber
                     };
                 }
             }
             return null;
         }
-        
 
         public List<PatientDto> GetAll()
         {
@@ -114,6 +116,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                         Contact = patientProfile.Contact,
                         DateOfBirth = patientProfile.DateOfBirth,
                         Gender = patientProfile.Gender,
+                        LicenseNumber = patient.DrLicenseNumber,
                     };
                     patientDtosList.Add(patientDto);
                 }
@@ -137,6 +140,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                     Gender = profile.Gender,
                     FirstName = profile.FirstName,
                     LastName = profile.LastName,
+                    LicenseNumber = patientCardNo.DrLicenseNumber,
                 };
             }
             return null;
@@ -158,7 +162,25 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                     Gender = profile.Gender,
                     FirstName = profile.FirstName,
                     LastName = profile.LastName,
+                    LicenseNumber = patientUserId.DrLicenseNumber
                 };
+            }
+            return null;
+        }
+
+        private string AssignedDoctor(string cardNo)        // asigning a doctor randomling
+        {
+            var getDoctors = _doctorRepository.GetAll();
+            var patients = _patientRepository.GetByCardNo(cardNo);
+            if(patients.DrLicenseNumber == null)
+            {
+                var doctorAtIndex = new Random().Next(0, getDoctors.Count());
+                var assignedDoctor = getDoctors[doctorAtIndex];
+                return assignedDoctor.LicenseNumber.ToString();
+            }
+            else
+            {
+                Console.WriteLine("No available Doctor");
             }
             return null;
         }

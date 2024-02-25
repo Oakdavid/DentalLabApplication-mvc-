@@ -98,7 +98,7 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
             Console.WriteLine("Enter your Gender");
             string gender = Console.ReadLine();
 
-            Console.WriteLine("Enter your First email");
+            Console.WriteLine("Enter your email");
             string email = Console.ReadLine();
             Console.WriteLine();
             Console.WriteLine("Enter your Password");
@@ -141,11 +141,11 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
         }
         public void ViewAllPatient()
         {
-           //var allPatient =  _patientService.GetAll();
-           // foreach (var patient in allPatient)
-           // {
-           //     _patientService.ToString(patient);
-           // }
+            var allPatient = _patientService.GetAll();
+            foreach (var patient in allPatient)
+            {
+                _patientService.ToString(patient);
+            }
         }
 
         public void ViewAllAppointment()
@@ -170,7 +170,7 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
                 //public string DrName { get; set; }
                 //public string PatientCardNo { get; set; }
             };
-            _reportService.Create(reportRequestModelDto);
+            _reportService.Create(reportRequestModelDto);       // which user am i giving a report too
             Console.WriteLine();
         }
 

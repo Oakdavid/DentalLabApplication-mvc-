@@ -15,11 +15,11 @@ using DentalLabConsoleApplicationWithAdo;
 
 
 
-//DentalLabDbContext dentalLabDbContext = new DentalLabDbContext();
-//dentalLabDbContext.Tables();
+DentalLabDbContext dentalLabDbContext = new DentalLabDbContext();
+dentalLabDbContext.Tables();
 
-Main main = new Main();
-main.MainMenu();
+////Main main = new Main();
+////main.MainMenu();
 
 //IAppointmentService appointmentService = new AppointmentService();
 //appointmentService.GetAll();
