@@ -8,10 +8,10 @@ namespace DentalLabConsoleApplicationWithAdo.Models.Entities
 {
     public class Report : BaseEntity
     {
-        public string RefNumber { get; set; }
-        public string DrName { get; set; }
-        public string PatientCardNo { get; set; }
-        public string ReportContent { get; set; }
+        public Appointment Appointment { get; set; }
+        public int? AppointmentId { get; set; }
+        public string? ReportContent { get; set; }
+        public string PatientComplain { get; set; }         // just added
 
     }
 }

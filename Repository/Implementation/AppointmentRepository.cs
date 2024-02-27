@@ -14,17 +14,17 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
     {
         public void Create(Appointment obj)
         {
+            int generatedId = -1;
              
             var tinyDeleted = obj.IsDeleted ? 1 : 0;
             using (MySqlConnection conn = new(DentalLabDbContext.connections))
             {
                 conn.Open();
-                string insertQuery = $"INSERT INTO appointment (RefNo, CardNo, DrNumber, PatientComplain, DateOfAppointment, AppointmentStatus, AppointmentType, IsDeleted) " +
-                $"VALUES ('{obj.RefNumber}', '{obj.CardNo}', '{obj.DrNumber}', '{obj.PatientComplain}', '{obj.DateOfAppointment.ToString("yyyy-MM-dd / hh-mm-ss")}'," +
+                string insertQuery = $"INSERT INTO appointment (RefNo,  DateOfAppointment, AppointmentStatus, AppointmentType, IsDeleted) " +
+                $"VALUES ('{obj.RefNumber}', '{obj.DateOfAppointment?.ToString("yyyy-MM-dd / hh-mm-ss")}'," +
                 $"'{obj.AppointmentStatus}','{obj.AppointmentType}', '{tinyDeleted}')";
 
                 var command = new MySqlCommand(insertQuery, conn);
-
                 var input = command.ExecuteNonQuery();
                 if (input > 0)
                 {
@@ -51,9 +51,6 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
                     {
                         Id = (int)appointmentReader["Id"],
                         RefNumber = appointmentReader["RefNo"].ToString(),
-                        CardNo = appointmentReader["CardNo"].ToString(),
-                        DrNumber = appointmentReader["DrNumber"].ToString(),
-                        PatientComplain = appointmentReader["PatientComplain"].ToString(),
                         DateOfAppointment = DateTime.Parse(appointmentReader["DateOfAppointment"].ToString()),
                         AppointmentStatus = Models.Enum.AppointmentStatus.Initialized,
                         AppointmentType = Models.Enum.AppointmentType.PhysicalAppointment,
@@ -80,9 +77,6 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
                     {
                         Id = (int)appointmentReader["Id"],
                         RefNumber = appointmentReader["RefNo"].ToString(),
-                        CardNo = appointmentReader["CardNo"].ToString(),
-                        DrNumber = appointmentReader["DrNumber"].ToString(),
-                        PatientComplain = appointmentReader["PatientComplain"].ToString(),
                         DateOfAppointment = DateTime.Parse(appointmentReader["DateOfAppointment"].ToString()),
                         AppointmentStatus = Models.Enum.AppointmentStatus.Initialized,
                         AppointmentType = Models.Enum.AppointmentType.PhysicalAppointment,
@@ -94,6 +88,29 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
             }
             return null;
         }
+        public Appointment GetLastId()
+        {
+            using (MySqlConnection conn = new MySqlConnection(DentalLabDbContext.connections))
+            {
+                conn.Open();
+                var command = new MySqlCommand("SELECT * FROM appointment ORDER BY Id DESC LIMIT 1", conn);
+                var appointmentReader = command.ExecuteReader();
+                while (appointmentReader.Read())
+                {
+                    return new Appointment
+                    {
+                        Id = (int)appointmentReader["Id"],
+                        RefNumber = appointmentReader["RefNo"].ToString(),
+                        DateOfAppointment = DateTime.Parse(appointmentReader["DateOfAppointment"].ToString()),
+                        AppointmentStatus = Models.Enum.AppointmentStatus.Initialized,
+                        AppointmentType = Models.Enum.AppointmentType.PhysicalAppointment,
+                        IsDeleted = false,
+                    };
+                }
+            }
+            return null;
+        }
+
         public List<Appointment> GetAll()
         {
             var list = new List<Appointment>();
@@ -109,9 +126,6 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
 
                         Id = (int)appointments["Id"],
                         RefNumber = appointments["RefNo"].ToString(),
-                        CardNo = appointments["CardNo"].ToString(),
-                        DrNumber = appointments["DrNumber"].ToString(),
-                        PatientComplain = appointments["PatientComplain"].ToString(),
                         DateOfAppointment = DateTime.Parse(appointments["DateOfAppointment"].ToString()),
                         AppointmentStatus = Models.Enum.AppointmentStatus.Initialized,
                         AppointmentType = Models.Enum.AppointmentType.PhysicalAppointment,

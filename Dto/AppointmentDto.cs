@@ -17,7 +17,7 @@ namespace DentalLabConsoleApplicationWithAdo.Dto
         public DateTime DateOfAppointment { get; set; }
         public AppointmentStatus AppointmentStatus { get; set; }
         public string ReportContent { get; set; }
-        public AppointmentType appointmentType { get; set; }
+        public AppointmentType AppointmentType { get; set; }
         public string Location { get; set; }
     }
 
@@ -26,8 +26,10 @@ namespace DentalLabConsoleApplicationWithAdo.Dto
         public string RefNumber { get; set; }         // is this right?
         public string CardNo { get; set; }
         public string DrNumber { get; set; }
-        public string PatientComplain { get; set; }
+        public int PatientId { get; set; }
+        public int AppointmentId {  get; set; }
         public DateTime DateOfAppointment { get; set; }
         public AppointmentType AppointmentType { get; set; }
+        public string PatientComplain { get; set; }
     }
 }

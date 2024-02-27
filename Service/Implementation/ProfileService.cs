@@ -27,7 +27,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                 LastName = model.LastName,
                 Address = model.Address,
                 Contact = model.Contact,
-                Gender = model.Gender,
+                Gender = Gender.Male,
                 DateOfBirth = model.DateOfBirth,
                 UserId = _userRepository.GetById()
             };
@@ -39,7 +39,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                 LastName = profile.LastName,
                 Address = profile.Address,
                 Contact = profile.Contact,
-                Gender = profile.Gender,
+                Gender = Gender.Male,
             };
         }
 

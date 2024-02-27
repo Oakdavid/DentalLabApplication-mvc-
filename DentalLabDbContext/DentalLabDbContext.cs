@@ -12,14 +12,15 @@ namespace DentalLabConsoleApplicationWithAdo
         string connection = "Server = localhost; user = root; password = David1234567890";
        public static string connections = "Server = localhost; user = root; password = David1234567890; database = DentalLabDb";
 
-        string createAppointment = "create table if not exists Appointment(Id int auto_increment primary key, RefNo varchar(50), CardNO varchar(50), DrNumber varchar(50), PatientComplain varchar(500), DrLicenseNumber varchar(50), DateOfAppointment datetime, AppointmentType Enum('VirtualAppointment', 'PhysicalAppointment'), AppointmentStatus Enum('Initialized', 'Assigned'),IsDeleted tinyint)";
+        string createAppointment = "create table if not exists Appointment(Id int auto_increment primary key, RefNo varchar(50), PatientId int,foreign Key (PatientId) references Patient(Id), DoctorId int, foreign Key (DoctorId) references Doctor(Id), DateOfAppointment datetime, AppointmentType Enum('VirtualAppointment', 'PhysicalAppointment'), AppointmentStatus Enum('Initialized', 'Assigned'),IsDeleted tinyint)";
 
-        string createPatient = "create table if not exists Patient(Id int auto_increment primary key, ProfileId int, CardNo varchar(50), IsDeleted tinyint,foreign KEY (ProfileId) references Profile(Id))";
+        string createPatient = "create table if not exists Patient(Id int auto_increment primary key, ProfileId int, CardNo varchar(50), DrLicenseNumber varchar(50), IsDeleted tinyint,foreign KEY (ProfileId) references Profile(Id))";
 
-        string createProfile = "create table if not exists Profile(Id int auto_increment primary key, UserId int, FirstName varchar(30), LastName varchar(50), Address varchar(50), Contact varchar(50), DateOfBirth datetime, Gender varchar(50), IsDeleted tinyint, foreign KEY (UserId) references user(Id))";
+        string createProfile = "create table if not exists Profile(Id int auto_increment primary key, UserId int, FirstName varchar(30), LastName varchar(50), Address varchar(50), Contact varchar(50), DateOfBirth datetime, Gender Enum('Male', 'Female'), IsDeleted tinyint, foreign KEY (UserId) references user(Id))";
 
 
-        string createReport = "create table if not exists Report(Id int auto_increment primary key, RefNumber varchar(50), PatientCardNo varchar(50), ReportContent varchar (225), DrName varchar (50),  IsDeleted tinyint)";
+        string createReport = "create table if not exists Report(Id int auto_increment primary key, AppointmentId int,foreign Key (AppointmentId) references Appointment(Id), ReportContent varchar (225), PatientComplain varchar(225), IsDeleted tinyint)";
+          
 
         string createHeadDoctor = "create table if not exists HeadDoctor (Email varchar(50), Password varchar (50))";
 
@@ -50,7 +51,7 @@ namespace DentalLabConsoleApplicationWithAdo
             createTables(createDoctor);
             createTables(createAppointment);
             createTables(createReport);
-            //createTables(createHeadDoctor);
+            createTables(createHeadDoctor);
 
             Console.WriteLine("Tables created successfully");
         }

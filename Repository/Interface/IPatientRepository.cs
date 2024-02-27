@@ -11,8 +11,8 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Interface
     {
         void Create(Patient obj);
         Patient GetByCardNo(string cardNo);
-        Patient GetById(int userId);
         Patient GetPatientByProfileId(int id);
         List<Patient> GetAll();
+        Patient GetById(int id);
     }
 }

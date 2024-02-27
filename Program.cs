@@ -15,11 +15,11 @@ using DentalLabConsoleApplicationWithAdo;
 
 
 
-DentalLabDbContext dentalLabDbContext = new DentalLabDbContext();
-dentalLabDbContext.Tables();
+//DentalLabDbContext dentalLabDbContext = new DentalLabDbContext();
+//dentalLabDbContext.Tables();
 
-////Main main = new Main();
-////main.MainMenu();
+Main main = new Main();
+main.MainMenu();
 
 //IAppointmentService appointmentService = new AppointmentService();
 //appointmentService.GetAll();
@@ -156,16 +156,44 @@ dentalLabDbContext.Tables();
 //Main main = new Main();
 //main.MainMenu();
 
+//IPatientService patientService = new PatientService();
+//PatientRequestModelDto patientRequestModelDto = new PatientRequestModelDto()
+//{
+//    FirstName = "sola",
+//    LastName = "odunbanku",
+//    Address = "lag",
+//    Contact = "0790845454",
+//    DateOfBirth = DateTime.Now,
+//    Gender = "male",
+//    Password = "123",
+//    Email = " lag@gmail.com",
+//    PatientCardNo = "123w",
+
+
+//};
+//patientService.Create(patientRequestModelDto);
+//Console.WriteLine();
+//var patient = patientService.GetAll();
+//Console.WriteLine();
+
 
 
 //IAppointmentService appointments = new AppointmentService();
 //AppointmentRequestModel appointment = new AppointmentRequestModel()
 //{
 //    PatientComplain = "i have something in my mouth that is stuck",
+//    AppointmentType = AppointmentType.VirtualAppointment,
+//    DateOfAppointment = DateTime.Now,
+//    DrNumber = "123",
+//    PatientId = 1,
+//    CardNo = "1",
+//    RefNumber = "1234",
+//    AppointmentId = 1
+
 //};
 
 //appointments.Create(appointment);
-//var appointmentAll = appointments.GetAll()
+//var appointmentAll = appointments.GetAll();
 //var appointmentGet = appointments.Get("RDT/DENTAL/00/14RDT/DENTAL/00/30");
 
 
@@ -235,23 +263,7 @@ dentalLabDbContext.Tables();
 //var getAll = doctorService.GetAll();
 //Console.WriteLine();
 
-//IPatientService patientService = new PatientService();
-//PatientRequestModelDto patientRequestModelDto = new PatientRequestModelDto()
-//{
-//    FirstName = "sola",
-//    LastName = "odunbanku",
-//    Address = "lag",
-//    Contact = "0790845454",
-//    DateOfBirth = DateTime.Now,
-//    Gender = "male",
-//    Password = "123",
-//    Email = " lag@gmail.com",
 
-//};
-//patientService.Create(patientRequestModelDto);
-//Console.WriteLine();
-//var patient = patientService.GetAll();
-//Console.WriteLine();
 
 
 //IProfileService profileService = new ProfileService();

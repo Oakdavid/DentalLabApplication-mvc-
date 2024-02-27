@@ -20,12 +20,13 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
     {
         IReportRepository _reportRepository = new ReportRepository();
         IProfileRepository _profileRepository = new ProfileRepository();      
-        IPatientRepository _patientRepository = new PatientRepository();          
+        IPatientRepository _patientRepository = new PatientRepository(); 
+        IDoctorRepository _doctorRepository = new DoctorRepository();
                                                                             
         public ReportDto Create(ReportRequestModelDto reports)
         {
             var profile = _profileRepository.GetProfileByUserId(Main.LoggedInId);
-            var patient = _patientRepository.GetPatientByProfileId(profile.Id);
+            var patient = _patientRepository.GetPatientByProfileId(profile.Id);     // am having exception
             
             var report = _reportRepository.Get(reports.RefNumber);
 
@@ -37,16 +38,12 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
 
             Report newReport = new Report()
             {
-                ReportContent = reports.ReportContent,
-                PatientCardNo = patient.CardNo              // more work needs to be done
+                ReportContent = reports.ReportContent,     // more work needs to be done
             };
             _reportRepository.Create(newReport);
 
             return new ReportDto
             {
-                RefNumber = newReport.RefNumber,
-                DrName = newReport.DrName,
-                PatientCardNo = newReport.PatientCardNo,
                 ReportContent = newReport.ReportContent,
             };
         }
@@ -68,17 +65,19 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
 
         public ReportDto Get(string cardNo)
         {
-           var report = _reportRepository.GetByCardNo(cardNo);
-           if(report != null)
-           {
+            var report = _reportRepository.GetByCardNo(cardNo);
+            var profile = _profileRepository.GetProfileByUserId(Main.LoggedInId);
+            var patient = _patientRepository.GetPatientByProfileId(profile.Id);
+            var doctor = _doctorRepository.GetById(report.Id); // not too sure if it will get it
+            if (report != null && patient != null)
+            {
                 return new ReportDto
                 {
                     ReportContent = report.ReportContent,
-                    DrName  = report.DrName, // i still need to include the doctors name
-                    PatientCardNo= report.PatientCardNo,
-                    RefNumber = report.RefNumber
+                    DrName  = doctor.LicenseNumber,                  // report.DrName, // i still need to include the doctors name
+                    
                 };
-           }
+            }
             return null;
 
         }
@@ -91,10 +90,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
             {
                 ReportDto reportDto = new ReportDto()
                 {
-                    RefNumber = report.RefNumber,
-                    PatientCardNo = report.PatientCardNo,
                     ReportContent = report.ReportContent,
-                    DrName = report.DrName,
                 };
                 reportDtos.Add(reportDto);
             }

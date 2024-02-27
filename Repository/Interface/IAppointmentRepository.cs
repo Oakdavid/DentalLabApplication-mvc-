@@ -13,5 +13,6 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Interface
         Appointment Get(string refNumber);
         public Appointment GetByCardNo(string cardNo);
         List<Appointment> GetAll();
+        Appointment GetLastId();
     }
 }

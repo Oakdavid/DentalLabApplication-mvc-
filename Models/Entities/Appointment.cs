@@ -12,12 +12,12 @@ namespace DentalLabConsoleApplicationWithAdo.Models.Entities
     public class Appointment : BaseEntity
     {
         public string RefNumber { get; set; }
-        public string CardNo { get; set; }
-        public string DrNumber { get; set; }
-        public string PatientComplain { get; set; }
-        public DateTime DateOfAppointment { get; set; }
+        public Patient Patient { get; set; }
+        public int? PatientId { get; set; }
+        public Doctor Doctor { get; set; }
+        public int? DoctorId { get; set; }
+        public DateTime? DateOfAppointment { get; set; }
         public AppointmentStatus AppointmentStatus { get; set; }  // doctor will set the date
-        public string ReportContent { get; set; }
         public AppointmentType AppointmentType { get; set; }          // appointment type
 
         public string Location { get; set; }

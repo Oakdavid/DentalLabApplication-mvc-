@@ -81,7 +81,12 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
                         Console.WriteLine("login successfully");
 
                     }
-                    else
+                    else if (response.Role == "Head Doctor")            // pending work to do
+                    {
+                        DoctorMenu doctorMenu = new DoctorMenu();
+                        doctorMenu.Doctor();
+                    }
+
                     {
                         Console.WriteLine("login failed. Returning to the main menu");
                         Console.WriteLine();

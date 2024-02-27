@@ -1,5 +1,6 @@
 ﻿using DentalLabConsoleApplicationWithAdo.Dto;
 using DentalLabConsoleApplicationWithAdo.Models.Entities;
+using DentalLabConsoleApplicationWithAdo.Models.Enum;
 using DentalLabConsoleApplicationWithAdo.Repository.Interface;
 using DentalLabConsoleApplicationWithAdo.Service.Implementation;
 using DentalLabConsoleApplicationWithAdo.Service.Interface;
@@ -93,12 +94,28 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
                 }
             }
 
-            Console.WriteLine("Enter your Gender");
-            string gender = Console.ReadLine();
+            Console.WriteLine("Enter 1 for Male or Enter 2 for Female");
+            int userInput = int.Parse(Console.ReadLine());
+            Gender gender = Gender.Male;
+
+            if (userInput == 1)
+            {
+                gender = Gender.Male;
+            }
+            else if(userInput == 2)
+            {
+                gender = Gender.Female;
+            }
+            else
+            {
+                Console.WriteLine("Enter the valid number");
+            }
             Console.WriteLine();
+
             Console.WriteLine("Enter your Email");
             string email = Console.ReadLine();
             Console.WriteLine();
+
             Console.WriteLine("Enter your Password");
             string password = Console.ReadLine();
 
@@ -119,11 +136,17 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
 
         public void GetAllDoctorServices()                      //1
         {
-           var doctorService = _doctorService.GetAllService();
-            foreach(var doctor in doctorService)
+           var doctorServices = _doctorService.GetAllService();
+            if(doctorServices == null || !doctorServices.Any())
+            {
+                Console.WriteLine("No available doctor service at this time");
+                return;
+            }
+
+            foreach(var doctor in doctorServices)
             {
                 _doctorService.ToString(doctor);
-                Console.WriteLine();
+                Console.WriteLine(doctor);
             }
         }
 
@@ -153,18 +176,29 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
         {
             Console.WriteLine("Enter your complain");
             string patientComplain = Console.ReadLine();
+
             var currentPatient = _patientService.GetPatientId(Main.LoggedInId);
+
+            var patientAppointments = _appointmentService.ViewAppointment(currentPatient.PatientCardNo);
+            if (patientAppointments != null )  
+            {
+                Console.WriteLine("You already have an existing appointment. Please cancel or reschedule it if needed.");
+                return;
+            }
             AppointmentRequestModel appointmentRequestModel = new AppointmentRequestModel()
             {
                 PatientComplain = patientComplain,
                 AppointmentType = Models.Enum.AppointmentType.PhysicalAppointment,
                 CardNo = currentPatient.PatientCardNo,
+                PatientId = currentPatient.Id
             };
             _appointmentService.Create(appointmentRequestModel);
+            Console.WriteLine("Appointment successfully booked!");
+
             Console.WriteLine();
         }
 
-        public void ViewAppointment()
+        public void ViewAppointment()                           //3
         {
             var patients = _patientService.GetPatientId(Main.LoggedInId);
             var patientAppointment = _appointmentService.ViewAppointment(patients.PatientCardNo);

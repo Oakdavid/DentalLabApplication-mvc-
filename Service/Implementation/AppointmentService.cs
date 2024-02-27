@@ -18,32 +18,54 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
     public class AppointmentService : IAppointmentService
     {
         IAppointmentRepository _appointmentRepository = new AppointmentRepository();
+        IPatientRepository _patientRepository = new PatientRepository();
+        IReportRepository _reportRepository = new ReportRepository();   
         public AppointmentDto Create(AppointmentRequestModel obj)
         {
+            var patientObj = _patientRepository.GetById(obj.PatientId);
+            if(patientObj ==null)
+            {
+                Console.WriteLine("No object found");
+                return null;
+            }
+            
+
+
             Appointment appointment = new Appointment
             {
 
                 RefNumber = $"RDT/DENTAL/00/{new Random().Next(001, 100)}",
-                CardNo = obj.CardNo,
-                DrNumber = $"RDT/DOCTOR/{new Random().Next(3, 5)}",
-                PatientComplain = obj.PatientComplain,
-                DateOfAppointment = DateTime.UtcNow,
+                DateOfAppointment = DateTime.Now,
                 AppointmentStatus = AppointmentStatus.Initialized,
                 AppointmentType = AppointmentType.PhysicalAppointment,
-                IsDeleted = false
+                IsDeleted = false,
+                Patient = patientObj,       // to get object of the patient
+                PatientId = patientObj.Id,
+                DoctorId = patientObj.Id,
                 
                 //ReportContent = obj.ReportContent,
             };
-            _appointmentRepository.Create(appointment);
+             _appointmentRepository.Create(appointment);
+            var lastAppointmentId = _appointmentRepository.GetLastId();
+            var report = new Report()
+            {
+                AppointmentId = lastAppointmentId.Id,
+                Appointment = appointment,
+                PatientComplain = obj.PatientComplain
+            };
+
+            _reportRepository.Create(report);
 
             return new AppointmentDto
             {
                 Id = appointment.Id,
                 RefNumber = appointment.RefNumber,
-                CardNo = appointment.CardNo,
-                DrNumber = appointment.DrNumber,
-                PatientComplain = appointment.PatientComplain,
-                AppointmentStatus = appointment.AppointmentStatus
+                AppointmentStatus = appointment.AppointmentStatus,
+                AppointmentType = appointment.AppointmentType,
+                CardNo = obj.CardNo,
+                PatientComplain = obj.PatientComplain,
+                DateOfAppointment= DateTime.Now,
+                DrNumber = obj.DrNumber,
                 
             };
         }
@@ -51,18 +73,19 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
         public AppointmentDto Get(string refNumber)
         {
             var appointment = _appointmentRepository.Get(refNumber);
+                   
             if (appointment != null && !appointment.IsDeleted)
             {
                 return new AppointmentDto
                 {
                     Id = appointment.Id,
-                    CardNo = appointment.CardNo,
-                    DrNumber = appointment.DrNumber,
-                    PatientComplain = appointment.PatientComplain,
-                    DateOfAppointment = appointment.DateOfAppointment
+                    AppointmentStatus = appointment.AppointmentStatus,
+                    AppointmentType = AppointmentType.VirtualAppointment,
+                    DateOfAppointment = DateTime.Now,
+                    RefNumber = refNumber,
                 };
             }
-            Console.WriteLine($"Appointment with reference no {refNumber} does not exist.");
+            Console.WriteLine($"Appointment with reference no: {refNumber} does not exist.");
             return null;
         }
 
@@ -76,9 +99,26 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                 {
                     Id = appointment.Id,
                     RefNumber = appointment.RefNumber,
-                    CardNo = appointment.CardNo,
-                    PatientComplain = appointment.PatientComplain,
-                    DateOfAppointment = appointment.DateOfAppointment,
+                    AppointmentStatus = appointment.AppointmentStatus,
+                    DateOfAppointment = DateTime.Now,
+                    AppointmentType= AppointmentType.VirtualAppointment,
+                    
+                };
+                listOfAppointmentDtos.Add(appointmentDto);
+            }
+            return listOfAppointmentDtos;
+        }
+
+        public List<AppointmentDto> GetAllWithoutAppointment()          // without appointment  select id witht responce and give a response
+        {
+            var appointmentGetAll = _appointmentRepository.GetAll();
+            var listOfAppointmentDtos = new List<AppointmentDto>();
+            foreach (var appointment in appointmentGetAll)
+            {
+                var appointmentDto = new AppointmentDto
+                {
+                    Id = appointment.Id,
+                    RefNumber = appointment.RefNumber,
                 };
                 listOfAppointmentDtos.Add(appointmentDto);
             }
@@ -93,7 +133,6 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                 return new AppointmentDto
                 {
                     Id = appointment.Id,
-                    DateOfAppointment = appointment.DateOfAppointment
                 };
 
             }

@@ -55,7 +55,7 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
                         Address = profileReader["Address"].ToString(),
                         Contact = profileReader["Contact"].ToString(),
                         DateOfBirth = DateTime.Parse(profileReader["DateOfBirth"].ToString()),
-                        Gender = profileReader["Gender"].ToString(),
+                        Gender = Models.Enum.Gender.Male,
                         UserId = (int)profileReader["Id"],
                         IsDeleted = Convert.ToBoolean(profileReader["IsDeleted"])
                     };
@@ -83,7 +83,7 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
                         Address = profileReader["Address"].ToString(),
                         Contact = profileReader["Contact"].ToString(),
                         DateOfBirth = DateTime.Parse(profileReader["DateOfBirth"].ToString()),
-                        Gender = profileReader["Gender"].ToString(),
+                        Gender = Models.Enum.Gender.Male,
                         IsDeleted = Convert.ToBoolean(profileReader["IsDeleted"])
                     };
                 }
@@ -110,7 +110,7 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
                         Address = profileReader["Address"].ToString(),
                         Contact = profileReader["Contact"].ToString(),
                         DateOfBirth = DateTime.Parse(profileReader["DateOfBirth"].ToString()),
-                        Gender = profileReader["Gender"].ToString(),
+                        Gender = Models.Enum.Gender.Male,
                         IsDeleted = Convert.ToBoolean(profileReader["IsDeleted"])
                     };
                 }
@@ -138,7 +138,7 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
                         Address = profileReader["Address"].ToString(),
                         Contact = profileReader["Contact"].ToString(),
                         DateOfBirth = DateTime.Parse(profileReader["DateOfBirth"].ToString()),
-                        Gender = profileReader["Gender"].ToString(),
+                        Gender = Models.Enum.Gender.Male,
                         IsDeleted = Convert.ToBoolean(profileReader["IsDeleted"])
                     });
                 }

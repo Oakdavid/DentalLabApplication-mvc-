@@ -17,6 +17,7 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
     {
         IDoctorService _doctorService = new DoctorService();
         IPatientService _patientService = new PatientService();
+        IProfileService _profileService = new ProfileService(); 
         IReportService _reportService = new ReportService();
         IAppointmentService _appointmentService = new AppointmentService();
 
@@ -126,7 +127,7 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
                 Address = address,
                 Contact = contact,
                 DateOfBirth = dateOfBirth,
-                Gender = gender,
+                Gender = Models.Enum.Gender.Male,
                 SpecializationDescription = specializationDescription,
                 
                 
@@ -142,6 +143,11 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
         public void ViewAllPatient()
         {
             var allPatient = _patientService.GetAll();
+            if(allPatient == null)
+            {
+                Console.WriteLine("No Patient available at this time");
+               
+            }
             foreach (var patient in allPatient)
             {
                 _patientService.ToString(patient);
@@ -150,11 +156,11 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
 
         public void ViewAllAppointment()
         {
-           //var allAppointment =  _appointmentService.GetAll();
-           // foreach (var appointment in allAppointment)
-           // {
-           //     _appointmentService.ToString(appointment);
-           // }
+            var allAppointment = _appointmentService.GetAll();
+            foreach (var appointment in allAppointment)
+            {
+                _appointmentService.ToString(appointment);
+            }
         }
 
         public void Report()

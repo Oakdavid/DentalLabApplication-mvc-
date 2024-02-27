@@ -1,6 +1,7 @@
 ﻿using DentalLabConsoleApplicationWithAdo.Dto;
 using DentalLabConsoleApplicationWithAdo.Menu;
 using DentalLabConsoleApplicationWithAdo.Models.Entities;
+using DentalLabConsoleApplicationWithAdo.Models.Enum;
 using DentalLabConsoleApplicationWithAdo.Repository.Implementation;
 using DentalLabConsoleApplicationWithAdo.Repository.Interface;
 using DentalLabConsoleApplicationWithAdo.Service.Interface;
@@ -22,7 +23,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
 
         public PatientDto Create(PatientRequestModelDto obj)
         {
-            var patientExist = _patientRepository.GetByCardNo(obj.PatientCardNo); // i need to check by email
+            var patientExist = _patientRepository.GetByCardNo(obj.PatientCardNo); 
             if (patientExist != null)
             {
                 Console.WriteLine($"{patientExist} exist");
@@ -44,12 +45,12 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                 Address = obj.Address,
                 Contact = obj.Contact,
                 DateOfBirth = obj.DateOfBirth,
-                Gender = obj.Gender,
+                Gender = Gender.Male,
                 UserId = _userRepository.GetById()
             };
             _profileRepository.Create(profile);
 
-            var CardNo = $"RDT/CARDNO/00/{new Random().Next(50, 100)}";            //moved
+            var CardNo = $"RDT/CARDNO/00/{new Random().Next(50, 100)}";            
             Patient patient = new Patient()
             {
                 CardNo = CardNo,
@@ -65,7 +66,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                 Address = obj.Address,
                 Contact = obj.Contact,
                 DateOfBirth = obj.DateOfBirth,
-                Gender = obj.Gender,
+                Gender = Gender.Male,
                 PatientCardNo = obj.PatientCardNo,
             };
 
@@ -88,8 +89,8 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                         Address = patientProfile.Address,
                         Contact = patientProfile.Contact,
                         DateOfBirth = patientProfile.DateOfBirth,
-                        Gender = patientProfile.Gender,
-                        LicenseNumber = patient.DrLicenseNumber
+                        Gender = Gender.Male,
+                        LicenseNumber = patient.DrLicenseNumber,
                     };
                 }
             }
@@ -115,7 +116,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                         Address = patientProfile.Address,
                         Contact = patientProfile.Contact,
                         DateOfBirth = patientProfile.DateOfBirth,
-                        Gender = patientProfile.Gender,
+                        Gender = Gender.Male,
                         LicenseNumber = patient.DrLicenseNumber,
                     };
                     patientDtosList.Add(patientDto);
@@ -137,7 +138,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                     Address = profile.Address,
                     Contact = profile.Contact,
                     DateOfBirth = profile.DateOfBirth,
-                    Gender = profile.Gender,
+                    Gender = Gender.Male,
                     FirstName = profile.FirstName,
                     LastName = profile.LastName,
                     LicenseNumber = patientCardNo.DrLicenseNumber,
@@ -155,11 +156,12 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
             {
                 return new PatientDto
                 {
+                    Id = patientUserId.Id,
                     PatientCardNo = patientUserId.CardNo,
                     Address = profile.Address,
                     Contact = profile.Contact,
                     DateOfBirth = profile.DateOfBirth,
-                    Gender = profile.Gender,
+                    Gender = Gender.Male,
                     FirstName = profile.FirstName,
                     LastName = profile.LastName,
                     LicenseNumber = patientUserId.DrLicenseNumber
@@ -168,20 +170,39 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
             return null;
         }
 
-        private string AssignedDoctor(string cardNo)        // asigning a doctor randomling
+        //private string AssignedDoctor(string cardNo)        // asigning a doctor randomling
+        //{
+        //    var getDoctors = _doctorRepository.GetAll();
+        //    var patients = _patientRepository.GetByCardNo(cardNo);
+        //    if(patients.DrLicenseNumber == null)
+        //    {
+        //        var doctorAtIndex = new Random().Next(0, getDoctors.Count());
+        //        var assignedDoctor = getDoctors[doctorAtIndex];
+        //        return assignedDoctor.LicenseNumber.ToString();
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine("No available Doctor");
+        //    }
+        //    return null;
+        //}
+
+        private string AssignedDoctor(string cardNo)
         {
-            var getDoctors = _doctorRepository.GetAll();
-            var patients = _patientRepository.GetByCardNo(cardNo);
-            if(patients.DrLicenseNumber == null)
+            var doctor = _doctorRepository.GetAll();
+            var patient = _patientRepository.GetByCardNo(cardNo);
+            if (patient == null)
             {
-                var doctorAtIndex = new Random().Next(0, getDoctors.Count());
-                var assignedDoctor = getDoctors[doctorAtIndex];
-                return assignedDoctor.LicenseNumber.ToString();
+                Console.WriteLine("Patient not found");
+                return null;
             }
-            else
+
+            if (string.IsNullOrEmpty(patient.DrLicenseNumber) && doctor.Any()) // it check if doctor is null or empty the any is a link method
             {
-                Console.WriteLine("No available Doctor");
+                var randomIndex = new Random().Next(0, doctor.Count());
+                return doctor[randomIndex].LicenseNumber.ToString();
             }
+            Console.WriteLine("No available doctor");
             return null;
         }
 

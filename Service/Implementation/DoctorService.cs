@@ -1,6 +1,7 @@
 ﻿using DentalLabConsoleApplicationWithAdo.Dto;
 using DentalLabConsoleApplicationWithAdo.Menu;
 using DentalLabConsoleApplicationWithAdo.Models.Entities;
+using DentalLabConsoleApplicationWithAdo.Models.Enum;
 using DentalLabConsoleApplicationWithAdo.Repository.Implementation;
 using DentalLabConsoleApplicationWithAdo.Repository.Interface;
 using DentalLabConsoleApplicationWithAdo.Service.Interface;
@@ -47,7 +48,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                 Address = doctor.Address,
                 Contact = doctor.Contact,
                 DateOfBirth = doctor.DateOfBirth,
-                Gender = doctor.Gender,
+                Gender = Models.Enum.Gender.Male,
                 UserId = _userRepository.GetById()
             };
             _profileRepository.Create(profile);
@@ -71,7 +72,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                 LastName = doctor.LastName,
                 Address = doctor.Address,
                 Contact = doctor.Contact,
-                Gender = doctor.Gender,
+                Gender = Gender.Male,
                 Email = doctor.Email,
                 LicenseNumber = doctor.LicenseNumber,
                 Education = doctor.Education,
@@ -119,7 +120,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                         Email = doctorUser.Email,
                         Address = doctorProfile.Address,
                         Contact = doctorProfile.Contact,
-                        Gender = doctorProfile.Gender,
+                        Gender = Gender.Male,
                         LicenseNumber = doctors.LicenseNumber,
                         Education = doctors.Education,
                         YearsOfExperience = doctors.YearsOfExperience,

@@ -17,9 +17,9 @@ namespace DentalLabConsoleApplicationWithAdo.Models.Entities
         public string Address { get; set; }
         public string Contact { get; set; }
         public DateTime DateOfBirth { get; set; }
-        //public Gender Genders{ get; set; }
+        public Gender Gender{ get; set; }
         
-        public string Gender { get; set; }
+       // public string Gender { get; set; }
         public int UserId {  get; set; }
     }
 }

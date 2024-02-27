@@ -21,9 +21,9 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
             using (MySqlConnection conn = new(DentalLabDbContext.connections))
             {
                 conn.Open();
-                string insertQuery = $" insert into Report(RefNumber, DrName, PatientCardNo, ReportContent, IsDeleted) " +
-                $" VALUES('{refNumber}', '{report.DrName}','{report.PatientCardNo}', '{report.ReportContent}', '{tinyDeleted}')";
-                var command = new MySqlCommand(insertQuery, conn);
+                string insertQuery = $" insert into Report(AppointmentId, ReportContent, PatientComplain, IsDeleted) " +
+                $" VALUES('{report.AppointmentId}', '{report.ReportContent}', '{report.PatientComplain}', '{tinyDeleted}')";
+                var command = new MySqlCommand(insertQuery, conn);       // just added
 
                 var input = command.ExecuteNonQuery();
                 if(input > 0)
@@ -67,9 +67,6 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
                     return new Report
                     {
                         Id = (int)reportReader["Id"],
-                        RefNumber = reportReader["RefNumber"].ToString(),
-                        DrName = reportReader["DrName"].ToString(),
-                        PatientCardNo = reportReader["PatientCardNo"].ToString(),
                         ReportContent = reportReader["ReportContent"].ToString(),
                         IsDeleted = Convert.ToBoolean(reportReader["IsDeleted"]),
                     };
@@ -90,9 +87,6 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
                     return new Report
                     {
                         Id = (int)reportReader["Id"],
-                        RefNumber = reportReader["RefNumber"].ToString(),
-                        DrName = reportReader["DrName"].ToString(),
-                        PatientCardNo = reportReader["PatientCardNo"].ToString(),
                         ReportContent = reportReader["ReportContent"].ToString(),
                         IsDeleted = Convert.ToBoolean(reportReader["IsDeleted"]),
                     };
@@ -115,9 +109,6 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
                     reportList.Add(new Report
                     {
                         Id = (int)reportReader["Id"],
-                        RefNumber = reportReader["RefNumber"].ToString(),
-                        DrName = reportReader["DrName"].ToString(),
-                        PatientCardNo = reportReader["PatientCardNo"].ToString(),
                         ReportContent = reportReader["ReportContent"].ToString(),
                         IsDeleted = Convert.ToBoolean(reportReader["IsDeleted"])
                     });
@@ -139,9 +130,6 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
                     return new Report
                     {
                         Id = (int)reportReader["Id"],
-                        RefNumber = reportReader["RefNumber"].ToString(),
-                        DrName = reportReader["DrName"].ToString(),
-                        PatientCardNo = reportReader["PatientCardNo"].ToString(),
                         ReportContent = reportReader["ReportContent"].ToString(),
                         IsDeleted = Convert.ToBoolean(reportReader["IsDeleted"])
                     };

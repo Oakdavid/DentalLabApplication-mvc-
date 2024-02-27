@@ -20,7 +20,7 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
                 using (MySqlConnection conn = new(DentalLabDbContext.connections))
                 {
                     conn.Open();
-                    string insertQuery = $"INSERT INTO patient (CardNo,ProfileId, LicenseNumber, IsDeleted) " +
+                    string insertQuery = $"INSERT INTO patient (CardNo,ProfileId, DrLicenseNumber, IsDeleted) " +
                     $"VALUES ('{cardNumber}','{obj.ProfileId}','{obj.DrLicenseNumber}','{tinyDeleted}')";
 
                     var command = new MySqlCommand(insertQuery, conn);
@@ -61,6 +61,7 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
             }
             return null;
         }
+      
 
         public List<Patient> GetAll()
         {
