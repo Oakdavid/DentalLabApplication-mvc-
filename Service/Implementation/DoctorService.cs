@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
 {
-    internal class DoctorService : IDoctorService
+    public class DoctorService : IDoctorService
     {
         IDoctorRepository _doctorRepository = new DoctorRepository();
         IProfileRepository _profileRepository  = new ProfileRepository();
@@ -192,7 +192,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
         public bool Update(UpdateDoctorRequstRegistrationDto doctor)
         {
             var existingDoctor = _doctorRepository.Get(doctor.LicenseNumber);
-            if(existingDoctor != null)
+            if (existingDoctor != null)
             {
 
                 existingDoctor.Education = doctor.Education;
@@ -204,6 +204,40 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                 return true;
             }
             return false;
+        }
+
+        public List<DoctorDto> IsAvailable()
+        {
+            var availableDoctors = _doctorRepository.GetAllAvailableDoctors();
+            if (availableDoctors != null)
+            {
+                return availableDoctors.Select(x => new DoctorDto
+                {
+                    LicenseNumber = x.LicenseNumber,
+                    Education = x.Education,
+                    YearsOfExperience = x.YearsOfExperience,
+                    Specializations = x.Specializations,
+                }).ToList();
+            }
+            return null;
+        }
+
+
+        public List<DoctorDto> GetDoctorSpecialization(DoctorDto doctor)
+        {
+            var specialization = _doctorRepository.GetDoctorSpecialization(doctor.Specializations);
+            if (specialization != null)
+            {
+                return specialization.Select(x => new DoctorDto
+                {
+                    LicenseNumber = doctor.LicenseNumber,
+                    Education = doctor.Education,
+                    YearsOfExperience = doctor.YearsOfExperience,
+                    Specializations = doctor.Specializations,
+
+                }).ToList();
+            }
+            return null;
         }
 
         public void ToString(DoctorDto obj)

@@ -3,12 +3,14 @@
     "",
     "\\DentalLabDbContext",
     "\\Dto",
+    "\\Models",
+    "\\Models\\Entities",
     "\\Repository",
     "\\Repository\\Interface",
     "\\Service",
     "\\Service\\Implementation",
     "\\Service\\Interface"
   ],
-  "SelectedNode": "\\Service\\Implementation\\ProfileService.cs",
+  "SelectedNode": "\\Models\\Entities",
   "PreviewInSolutionExplorer": false
 }

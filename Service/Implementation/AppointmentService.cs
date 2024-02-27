@@ -125,18 +125,18 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
             return listOfAppointmentDtos;
         }
 
-        public AppointmentDto ViewAppointment(string patientCardno)
+        public AppointmentDto ViewAppointment(int patientNo)
         {
-            var appointment = _appointmentRepository.GetByCardNo(patientCardno);
+            var appointment = _appointmentRepository.GetByPatientNo(patientNo);
             if (appointment != null && !appointment.IsDeleted)
             {
                 return new AppointmentDto
                 {
-                    Id = appointment.Id,
+                    Id = appointment.Id
                 };
 
             }
-            Console.WriteLine($"Appointment with reference no {patientCardno} does not exist.");
+            Console.WriteLine($"Appointment with reference no {patientNo} does not exist.");
             return null;
         }
         public void ToString(AppointmentDto obj)

@@ -14,6 +14,8 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Interface
         Doctor GetByEmail(string email);
         Doctor GetById( int id);
         List<Doctor> GetAll();
+        List<Doctor> GetAllAvailableDoctors();
+        List<Doctor> GetDoctorSpecialization(string specialization);
         bool Update(Doctor doctor);
 
     }

@@ -16,6 +16,8 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Interface
         List<DoctorDto> GetAll();
         DoctorDto GetById(int id);
         List<DoctorDto> GetAllService();
+        List<DoctorDto> IsAvailable();
+        List<DoctorDto> GetDoctorSpecialization(DoctorDto doctor);
         bool Update(UpdateDoctorRequstRegistrationDto doctor);
         public void ToString(DoctorDto obj);
     }

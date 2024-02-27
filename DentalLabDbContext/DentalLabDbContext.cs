@@ -16,6 +16,8 @@ namespace DentalLabConsoleApplicationWithAdo
 
         string createPatient = "create table if not exists Patient(Id int auto_increment primary key, ProfileId int, CardNo varchar(50), DrLicenseNumber varchar(50), IsDeleted tinyint,foreign KEY (ProfileId) references Profile(Id))";
 
+        string createDentalService = "create table if not exists DentalService(Id int auto_increment primary key, Name varchar(50), Description varchar(225), Code varchar(50), Cost Decimal(10, 2),IsDeleted tinyint)";
+
         string createProfile = "create table if not exists Profile(Id int auto_increment primary key, UserId int, FirstName varchar(30), LastName varchar(50), Address varchar(50), Contact varchar(50), DateOfBirth datetime, Gender Enum('Male', 'Female'), IsDeleted tinyint, foreign KEY (UserId) references user(Id))";
 
 
@@ -25,7 +27,7 @@ namespace DentalLabConsoleApplicationWithAdo
         string createHeadDoctor = "create table if not exists HeadDoctor (Email varchar(50), Password varchar (50))";
 
         string createDoctor = "create table if not exists Doctor(Id int auto_increment primary key,ProfileId int, foreign Key (ProfileId) references Profile(Id), LicenseNumber varchar(50)," +
-                              " Education varchar(50), YearsOfExperience int, Specializations varchar(50), SpecializationDescription varchar(200), IsDeleted tinyint)";
+                              " Education varchar(50), YearsOfExperience int, Specializations varchar(50), SpecializationDescription varchar(200), IsAvailable tinyint, IsDeleted tinyint)";
 
 
         string createUser = "create table if not exists user(Id int auto_increment primary key, Email varchar(50), Password varchar(50), Role varchar(50), IsDeleted tinyint)";
@@ -45,13 +47,14 @@ namespace DentalLabConsoleApplicationWithAdo
                 var tablesCreated = new MySqlCommand(schemaQuerry, conn);
                 tablesCreated.ExecuteNonQuery();
             }
-            createTables(createUser);
-            createTables(createProfile);
-            createTables(createPatient);
-            createTables(createDoctor);
-            createTables(createAppointment);
-            createTables(createReport);
-            createTables(createHeadDoctor);
+            //createTables(createUser);
+            //createTables(createProfile);
+            //createTables(createPatient);
+            //createTables(createDoctor);
+            createTables(createDentalService);
+            //createTables(createAppointment);
+            //createTables(createReport);
+            //createTables(createHeadDoctor);
 
             Console.WriteLine("Tables created successfully");
         }

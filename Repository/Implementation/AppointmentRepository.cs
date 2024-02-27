@@ -64,12 +64,12 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
         }
 
 
-        public Appointment GetByCardNo(string cardNo)
+        public Appointment GetByPatientNo(int patientNo)
         {
             using (MySqlConnection conn = new(DentalLabDbContext.connections))
             {
                 conn.Open();
-                var command = new MySqlCommand($"select * from appointment where CardNo = '{cardNo}'", conn);
+                var command = new MySqlCommand($"select * from appointment where PatientId = '{patientNo}'", conn);
                 var appointmentReader = command.ExecuteReader();
                 while (appointmentReader.Read())
                 {

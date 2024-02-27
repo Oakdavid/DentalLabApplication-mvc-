@@ -17,14 +17,14 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
     {
         public void Create(Doctor doctor)
         {
-
+            var isAvailable = doctor.IsAvailable? 1 : 0;
             var tinyDeleted = doctor.IsDeleted ? 1 : 0;
             using (MySqlConnection conn = new(DentalLabDbContext.connections))
             {
                 conn.Open();
                 string insertQuery = $"INSERT INTO doctor (LicenseNumber,ProfileId, Education, YearsOfExperience, Specializations,SpecializationDescription, IsDeleted) " +
                 $"VALUES ('{doctor.LicenseNumber}', '{doctor.ProfileId}','{doctor.Education}', '{doctor.YearsOfExperience}'," +
-                $"'{doctor.Specializations}', '{doctor.SpecializationDescription}', '{tinyDeleted}')";
+                $"'{doctor.Specializations}', '{doctor.SpecializationDescription}', '{isAvailable}', '{tinyDeleted}')";
 
                 var command = new MySqlCommand(insertQuery, conn);
 
@@ -122,6 +122,62 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
            }
         }
 
+        public List<Doctor> GetAllAvailableDoctors()
+        {
+            var doctorList = new List<Doctor>();
+            using (MySqlConnection conn = new(DentalLabDbContext.connections))
+            {
+                conn.Open();
+                string query = $"select * from doctor where IsAvailable = 1";
+                var command = new MySqlCommand(query, conn);
+                var doctorReader = command.ExecuteReader();
+                while (doctorReader.Read())
+                {
+                    doctorList.Add(new Doctor
+                    {
+                        Id = (int)doctorReader["Id"],
+                        LicenseNumber = doctorReader["LicenseNumber"].ToString(),
+                        Education = doctorReader["Education"].ToString(),
+                        YearsOfExperience = (int)doctorReader["YearsOfExperience"],
+                        Specializations = doctorReader["Specializations"].ToString(),
+                        SpecializationDescription = doctorReader["SpecializationDescription"].ToString(),
+                        ProfileId = (int)doctorReader["ProfileId"],
+                        IsAvailable = Convert.ToBoolean(doctorReader["IsAvailable"]),
+                        IsDeleted = Convert.ToBoolean(doctorReader["IsDeleted"])
+                    });
+                }
+                return doctorList;
+            }
+        }
+
+        public List<Doctor> GetDoctorSpecialization(string specialization)
+        {
+            var doctorList = new List<Doctor>();
+            using (MySqlConnection conn = new(DentalLabDbContext.connections))
+            {
+                conn.Open();
+                string query = $"select * from doctor where Specialization = {specialization}";
+                var command = new MySqlCommand(query, conn);
+                var doctorReader = command.ExecuteReader();
+                while (doctorReader.Read())
+                {
+                    doctorList.Add(new Doctor
+                    {
+                        Id = (int)doctorReader["Id"],
+                        LicenseNumber = doctorReader["LicenseNumber"].ToString(),
+                        Education = doctorReader["Education"].ToString(),
+                        YearsOfExperience = (int)doctorReader["YearsOfExperience"],
+                        Specializations = doctorReader["Specializations"].ToString(),
+                        SpecializationDescription = doctorReader["SpecializationDescription"].ToString(),
+                        ProfileId = (int)doctorReader["ProfileId"],
+                        IsAvailable = Convert.ToBoolean(doctorReader["IsAvailable"]),
+                        IsDeleted = Convert.ToBoolean(doctorReader["IsDeleted"])
+                    });
+                }
+                return doctorList;
+            }
+        }
+
         public Doctor GetById(int id)
         {
             using (MySqlConnection conn = new(DentalLabDbContext.connections))
@@ -148,6 +204,8 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
             }
             return null;
         }
+
+
 
         public bool Update(Doctor doctor)
         {

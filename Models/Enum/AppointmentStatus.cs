@@ -10,6 +10,6 @@ namespace DentalLabConsoleApplicationWithAdo.Models.Enum
     {
         Initialized = 1,
         Assigned = 2,
-
+        Close = 3
     }
 }

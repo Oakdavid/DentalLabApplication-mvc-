@@ -21,6 +21,21 @@ using DentalLabConsoleApplicationWithAdo;
 Main main = new Main();
 main.MainMenu();
 
+//DentalServiceService dentalService = new DentalServiceService();
+//DentalService service = new DentalService
+//{
+//    Id = 1,
+//    Name = "scalling and polishing",
+//    Description = "it the washing",
+//    Code = "123ed",
+//    Cost = 2000
+//};
+////dentalService.Create(service);
+////var get = dentalService.Get(1);
+////var getAll = dentalService.GetAllService();
+//var update = dentalService.Update(service);
+//Console.WriteLine();
+
 //IAppointmentService appointmentService = new AppointmentService();
 //appointmentService.GetAll();
 //AppointmentRepository appointmentRepsoitory = new AppointmentRepository();

@@ -23,7 +23,7 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
 
         public void Doctor()
         {
-            Console.WriteLine("Enter 1 to view all Patient\nEnter 2 to view appointment " +
+            Console.WriteLine("Enter 1 to view to assigned Patient\nEnter 2 to view  assiged appointment " +
                 "\nEnter 3 to send report \nPress 4 to update specialization\nEnter 0 to go back to Main Menu");
             string options = Console.ReadLine();
 
@@ -98,6 +98,8 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
             Console.WriteLine();
             Console.WriteLine("Enter your Gender");
             string gender = Console.ReadLine();
+
+            
 
             Console.WriteLine("Enter your email");
             string email = Console.ReadLine();
@@ -218,31 +220,6 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
             }
         }
 
-        public void ValidateDateOfBirth(DateTime date)
-        {
-            Console.WriteLine("Please enter a date of birth in this format (YYYY-MM-DD format)");
-            DateTime dateOffBirth = DateTime.Parse(Console.ReadLine());
-            
-                bool validDateTime = false;
-
-                while (!validDateTime)
-                {
-                    Console.WriteLine("Please enter a date and time (YYYY-MM-DD format):");
-                    string userInput = Console.ReadLine();
-                    string expectedFormat = "yyyy-MM-dd";
-                    if (DateTime.TryParseExact(userInput, expectedFormat, null, DateTimeStyles.None, out DateTime result))
-                    {
-                        Console.WriteLine($"Valid datetime: {result}");
-                        validDateTime = true;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid datetime format. Please enter the date in YYYY-MM-DD format");
-                        break;
-                    }
-                }
-            
-
-        }
+      
     }
 }

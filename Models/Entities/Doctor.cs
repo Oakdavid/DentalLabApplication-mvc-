@@ -15,6 +15,7 @@ namespace DentalLabConsoleApplicationWithAdo.Models.Entities
         public int YearsOfExperience { get; set; }
         public string Specializations { get; set; }
         public string SpecializationDescription { get; set; }
+        public bool IsAvailable { get; set; }
 
         public override string ToString()
         {

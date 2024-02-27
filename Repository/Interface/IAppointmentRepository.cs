@@ -11,7 +11,7 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Interface
     {
         void Create(Appointment obj);
         Appointment Get(string refNumber);
-        public Appointment GetByCardNo(string cardNo);
+        public Appointment GetByPatientNo(int patientNo);
         List<Appointment> GetAll();
         Appointment GetLastId();
     }

@@ -13,9 +13,9 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Interface
     {
         AppointmentDto Create(AppointmentRequestModel obj);
         AppointmentDto Get(string refNumber);
-        public AppointmentDto ViewAppointment(string patientCardno);
+        AppointmentDto ViewAppointment(int patientNo);
 
         List<AppointmentDto> GetAll();
-        public void ToString(AppointmentDto obj);
+        void ToString(AppointmentDto obj);
     }
 }
