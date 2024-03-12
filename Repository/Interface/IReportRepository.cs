@@ -12,9 +12,10 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Interface
         void Create(Report report);
         Report Get(string refNumber);
         public Report GetByCardNo(string cardNo);
-        Report GetByEmail(string email);
         List<Report> GetAll();
         bool Delete(string refNumber);
-
+        Report GetReportByAppointmentId(int id);
+        Report UpdateReport(Report updatedReport);
+        Report GetAppointmentById(int id);
     }
 }

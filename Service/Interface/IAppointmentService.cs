@@ -17,5 +17,9 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Interface
 
         List<AppointmentDto> GetAll();
         void ToString(AppointmentDto obj);
+        List<AppointmentDto> GetAllInitialized();
+        public List<AppointmentDto> GetAppointmentByDoctorId(int id);
+        bool AssignDoctorToAppointment(string reference, int doctorId);
+        List<AppointmentDto> GetAllAssigned();
     }
 }

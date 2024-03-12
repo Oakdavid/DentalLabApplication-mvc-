@@ -24,11 +24,7 @@ namespace DentalLabConsoleApplicationWithAdo.Dto
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Address { get; set; }
-        [MaxLength(11)]
         public string Contact { get; set; }
-        [Required(ErrorMessage = "Date of Birth is required")]
-        [Display(Name = "Date of Birth")]
-        [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
         
         public string Gender { get; set; }

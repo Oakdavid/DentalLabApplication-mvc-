@@ -63,7 +63,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                 Specializations = doctor.Specializations,
                 SpecializationDescription = doctor.SpecializationDescription,
                 ProfileId = _profileRepository.GetProfileId(),
-
+                IsAvailable = true,
             };
             _doctorRepository.Create(doctors);
 
@@ -72,7 +72,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                 LastName = doctor.LastName,
                 Address = doctor.Address,
                 Contact = doctor.Contact,
-                Gender = Gender.Male,
+                Gender = doctor.Gender,
                 Email = doctor.Email,
                 LicenseNumber = doctor.LicenseNumber,
                 Education = doctor.Education,
@@ -120,7 +120,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                         Email = doctorUser.Email,
                         Address = doctorProfile.Address,
                         Contact = doctorProfile.Contact,
-                        Gender = Gender.Male,
+                        Gender = doctorProfile.Gender,
                         LicenseNumber = doctors.LicenseNumber,
                         Education = doctors.Education,
                         YearsOfExperience = doctors.YearsOfExperience,
@@ -209,21 +209,23 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
         public List<DoctorDto> IsAvailable()
         {
             var availableDoctors = _doctorRepository.GetAllAvailableDoctors();
-            if (availableDoctors != null)
+            if (availableDoctors != null && availableDoctors.Any())
             {
                 return availableDoctors.Select(x => new DoctorDto
                 {
+                    Id = x.Id,
                     LicenseNumber = x.LicenseNumber,
                     Education = x.Education,
                     YearsOfExperience = x.YearsOfExperience,
                     Specializations = x.Specializations,
+                    LastName = _profileRepository.Get(x.ProfileId).LastName
                 }).ToList();
             }
             return null;
         }
 
 
-        public List<DoctorDto> GetDoctorSpecialization(DoctorDto doctor)
+        public List<DoctorDto> GetDoctorSpecialization(DoctorDto doctor) 
         {
             var specialization = _doctorRepository.GetDoctorSpecialization(doctor.Specializations);
             if (specialization != null)

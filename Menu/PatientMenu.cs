@@ -51,7 +51,6 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
             {
                 ViewDoctorsReports();
                 Patient();
-                Patient();
             }
             else if (options == "0")
             {
@@ -95,7 +94,7 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
                 }
             }
 
-            Console.WriteLine("Enter 1 for Male or Enter 2 for Female");
+            Console.WriteLine("Enter 1 for Male\nEnter 2 for Female");
             int userInput = int.Parse(Console.ReadLine());
             Gender gender = Gender.Male;
 
@@ -103,7 +102,7 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
             {
                 gender = Gender.Male;
             }
-            else if(userInput == 2)
+            else if (userInput == 2)
             {
                 gender = Gender.Female;
             }
@@ -133,31 +132,29 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
             };
             _patientService.Create(patientDto);
             Console.WriteLine();
-        }                   // done
+        }                   
 
-        public void GetAllDentalServices()                      //1    done
+        public void GetAllDentalServices()                 
         {
-            HeadDoctorMenu headDoctorMenu = new HeadDoctorMenu();
+            var dentServices = _dentalServiceService.GetAllService();
+            foreach (var  services in dentServices)
             {
-                    
-                headDoctorMenu.DentalServices();
+                Console.WriteLine($"Name: {services.Name}\t Description: {services.Description}\t Code:{services.Code}\t Cost: {services.Cost}");
             }
         }
 
-        public void ViewDoctorsReports()                           // 4
+        public void ViewDoctorsReports()                           
         {
             var patient = _patientService.GetPatientId(Main.LoggedInId);
 
-            var doctorsReport = _reportService.Get(patient.PatientCardNo);
+            var doctorsReport = _reportService.GetReportByAppointmentId(patient.Id);
 
             if (doctorsReport != null)
             {
 
                 Console.WriteLine($"Reference Number:  {doctorsReport.RefNumber} " +
-                    $"Doctors Name: {doctorsReport.DrName} " +
                     $"PatientCardNo: {doctorsReport.PatientCardNo}" +
                     $" Doctors Report: {doctorsReport.ReportContent}");
-
             }
             else
             {
@@ -166,77 +163,69 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
             }
         }
 
-        public void BookAppointment()                       // 2
+        public void BookAppointment()                       
         {
             var allServices = _dentalServiceService.GetAllService();
             foreach (var service in allServices)
             {
-                Console.WriteLine($"Name: {service.Name}, Code: {service.Code}Description: {service.Description}");
+                Console.WriteLine($"Name:{service.Name}\t, Description: {service.Description}\t Code:{service.Code}\t Cost:{service.Cost}");
             }
             Console.WriteLine("Select from the code that suit your area of complain to book an appointment");
-            Console.WriteLine("Enter 1 for code one\nEnter 2 for code three\nEnter 3 for code three\nEnter 4 for code four");
+            Console.WriteLine("Enter 1 for code one\nEnter 2 for code two\nEnter 3 for code three\nEnter 4 for code four");
             string options = Console.ReadLine();
 
-            if (options == "1" || options == "2" || options == "3" || options == "4")  // code need to tally with database
+            if (options == "1" || options == "2" || options == "3" || options == "4")
             {
                 Console.WriteLine("Enter your complaint");
-                string patientComplain = Console.ReadLine();
+                string patientComplaint = Console.ReadLine();
+
                 var currentPatients = _patientService.GetPatientId(Main.LoggedInId);
                 var appointmentExist = _appointmentService.ViewAppointment(currentPatients.Id);
-                if (appointmentExist != null)
+                if (appointmentExist != null )
                 {
                     Console.WriteLine("You already have an existing appointment. Please cancel or reschedule it if needed.");
                     return;
                 }
 
-                Console.WriteLine("Enter 1 for Physical or Enter 2 for virtual"); // coming to this
+                Console.WriteLine("Enter 1 for Physical\nEnter 2 for virtual");
+                int userInput = int.Parse(Console.ReadLine());
+                AppointmentType appointmentType = AppointmentType.PhysicalAppointment;
+                if(userInput == 1)
+                {
+                    appointmentType = AppointmentType.PhysicalAppointment;
+                }
+                else if (userInput == 2)
+                {
+                    appointmentType = AppointmentType.VirtualAppointment;
+                }
+                else
+                {
+                    Console.WriteLine("Please enter a valid option (1, 2, 3, or 4)");
+                }
+
                 AppointmentRequestModel appointmentRequest = new AppointmentRequestModel()
                 {
-                    PatientComplain = patientComplain,
-                    AppointmentType = Models.Enum.AppointmentType.PhysicalAppointment,
+                    PatientComplain = patientComplaint,
+                    AppointmentType = appointmentType,
                     CardNo = currentPatients.PatientCardNo,
-                    PatientId = currentPatients.Id
+                    PatientId = currentPatients.Id,
                 };
                 _appointmentService.Create(appointmentRequest);
                 Console.WriteLine("Appointment successfully booked!");
             }
             else
             {
-                Console.WriteLine("Enter a valid code");
+                Console.WriteLine("Please enter 1 for physical or enter 2 for virtual");
             }
-
-
-            //Console.WriteLine("Enter your complain");
-            //string patientComplain = Console.ReadLine();
-
-            //var currentPatient = _patientService.GetPatientId(Main.LoggedInId);
-
-            //var patientAppointments = _appointmentService.ViewAppointment(currentPatient.PatientCardNo);
-            //if (patientAppointments != null )  
-            //{
-            //    Console.WriteLine("You already have an existing appointment. Please cancel or reschedule it if needed.");
-            //    return;
-            //}
-            //AppointmentRequestModel appointmentRequestModel = new AppointmentRequestModel()
-            //{
-            //    PatientComplain = patientComplain,
-            //    AppointmentType = Models.Enum.AppointmentType.PhysicalAppointment,
-            //    CardNo = currentPatient.PatientCardNo,
-            //    PatientId = currentPatient.Id
-            //};
-            //_appointmentService.Create(appointmentRequestModel);
-            //Console.WriteLine("Appointment successfully booked!");
-
-            //Console.WriteLine();
         }
 
-        public void ViewAppointment()                           //3
+        public void ViewAppointment()                           
         {
             var patients = _patientService.GetPatientId(Main.LoggedInId);
             var patientAppointment = _appointmentService.ViewAppointment(patients.Id);
             if(patientAppointment != null)
             {
-                Console.WriteLine($"The date of Appointment is {patientAppointment.DateOfAppointment}");
+                Console.WriteLine($"The date of Appointment is:  {patientAppointment.DateOfAppointment}\tAppointment Status:{patientAppointment.AppointmentStatus}\t Appointment Type: {patientAppointment.AppointmentType}");
             }
         }
     }

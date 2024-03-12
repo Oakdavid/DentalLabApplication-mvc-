@@ -11,7 +11,7 @@ namespace DentalLabConsoleApplicationWithAdo.Models.Entities
         public Appointment Appointment { get; set; }
         public int? AppointmentId { get; set; }
         public string? ReportContent { get; set; }
-        public string PatientComplain { get; set; }         // just added
+        public string PatientComplain { get; set; } 
 
     }
 }

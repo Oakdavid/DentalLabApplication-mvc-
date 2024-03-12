@@ -47,14 +47,14 @@ namespace DentalLabConsoleApplicationWithAdo
                 var tablesCreated = new MySqlCommand(schemaQuerry, conn);
                 tablesCreated.ExecuteNonQuery();
             }
-            //createTables(createUser);
-            //createTables(createProfile);
-            //createTables(createPatient);
-            //createTables(createDoctor);
+            createTables(createUser);
+            createTables(createProfile);
+            createTables(createPatient);
+            createTables(createDoctor);
             createTables(createDentalService);
-            //createTables(createAppointment);
-            //createTables(createReport);
-            //createTables(createHeadDoctor);
+            createTables(createAppointment);
+            createTables(createReport);
+            createTables(createHeadDoctor);
 
             Console.WriteLine("Tables created successfully");
         }

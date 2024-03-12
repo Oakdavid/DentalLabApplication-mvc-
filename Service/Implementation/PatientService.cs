@@ -45,7 +45,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                 Address = obj.Address,
                 Contact = obj.Contact,
                 DateOfBirth = obj.DateOfBirth,
-                Gender = Gender.Male,
+                Gender = obj.Gender,
                 UserId = _userRepository.GetById()
             };
             _profileRepository.Create(profile);
@@ -66,10 +66,9 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                 Address = obj.Address,
                 Contact = obj.Contact,
                 DateOfBirth = obj.DateOfBirth,
-                Gender = Gender.Male,
+                Gender = obj.Gender,
                 PatientCardNo = obj.PatientCardNo,
             };
-
         }
 
         public PatientDto Get(string PatientCardNo)
@@ -89,7 +88,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                         Address = patientProfile.Address,
                         Contact = patientProfile.Contact,
                         DateOfBirth = patientProfile.DateOfBirth,
-                        Gender = Gender.Male,
+                        Gender = patientProfile.Gender,
                         LicenseNumber = patient.DrLicenseNumber,
                     };
                 }
@@ -107,16 +106,15 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                 var patientUser = _userRepository.Get(patientProfile.UserId); 
                 if (patientUser != null && patientProfile != null)
                 {
-                    PatientDto patientDto = new PatientDto      //maping of patient and profile, user
+                    PatientDto patientDto = new PatientDto  
                     {
-
                         PatientCardNo = patient.CardNo,
                         FirstName = patientProfile.FirstName,
                         LastName = patientProfile.LastName,
                         Address = patientProfile.Address,
                         Contact = patientProfile.Contact,
                         DateOfBirth = patientProfile.DateOfBirth,
-                        Gender = Gender.Male,
+                        Gender = patientProfile.Gender,
                         LicenseNumber = patient.DrLicenseNumber,
                     };
                     patientDtosList.Add(patientDto);
@@ -138,7 +136,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                     Address = profile.Address,
                     Contact = profile.Contact,
                     DateOfBirth = profile.DateOfBirth,
-                    Gender = Gender.Male,
+                    Gender = profile.Gender,
                     FirstName = profile.FirstName,
                     LastName = profile.LastName,
                     LicenseNumber = patientCardNo.DrLicenseNumber,
@@ -161,7 +159,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                     Address = profile.Address,
                     Contact = profile.Contact,
                     DateOfBirth = profile.DateOfBirth,
-                    Gender = Gender.Male,
+                    Gender = profile.Gender,
                     FirstName = profile.FirstName,
                     LastName = profile.LastName,
                     LicenseNumber = patientUserId.DrLicenseNumber
@@ -170,22 +168,48 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
             return null;
         }
 
-        //private string AssignedDoctor(string cardNo)        // asigning a doctor randomling
-        //{
-        //    var getDoctors = _doctorRepository.GetAll();
-        //    var patients = _patientRepository.GetByCardNo(cardNo);
-        //    if(patients.DrLicenseNumber == null)
-        //    {
-        //        var doctorAtIndex = new Random().Next(0, getDoctors.Count());
-        //        var assignedDoctor = getDoctors[doctorAtIndex];
-        //        return assignedDoctor.LicenseNumber.ToString();
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("No available Doctor");
-        //    }
-        //    return null;
-        //}
+        public PatientDto GetById(int id)
+        {
+            var patientUserId = _patientRepository.GetById(id);
+            if (patientUserId != null)
+            {
+                return new PatientDto
+                {
+                    Id = patientUserId.Id,
+                    PatientCardNo = patientUserId.CardNo,
+                    LicenseNumber = patientUserId.DrLicenseNumber
+                };
+            }
+            return null;
+        }
+
+        public List<PatientDto> GetAllInitializedPatient()
+        {
+            var patientList = _patientRepository.GetAll();
+            var patientDtosList = new List<PatientDto>();
+            foreach (var patient in patientList)
+            {
+                var patientProfile = _profileRepository.Get(patient.ProfileId);
+                var patientUser = _userRepository.Get(patientProfile.UserId);
+                if (patientUser != null && patientProfile != null)
+                {
+                    PatientDto patientDto = new PatientDto  
+                    {
+
+                        PatientCardNo = patient.CardNo,
+                        FirstName = patientProfile.FirstName,
+                        LastName = patientProfile.LastName,
+                        Address = patientProfile.Address,
+                        Contact = patientProfile.Contact,
+                        DateOfBirth = patientProfile.DateOfBirth,
+                        Gender = patientProfile.Gender,
+                        LicenseNumber = patient.DrLicenseNumber,
+                    };
+                    patientDtosList.Add(patientDto);
+                }
+            }
+            return patientDtosList;
+        }
 
         private string AssignedDoctor(string cardNo)
         {

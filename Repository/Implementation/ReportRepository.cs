@@ -28,7 +28,7 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
                 var input = command.ExecuteNonQuery();
                 if(input > 0)
                 {
-                    Console.WriteLine("Report created successfully");
+                   // Console.WriteLine("Report created successfully");
                 }
             }
         }
@@ -74,6 +74,52 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
             }
             return null;
         }
+
+        public Report GetReportByAppointmentId(int id)
+        {
+            using (MySqlConnection conn = new(DentalLabDbContext.connections))
+            {
+                conn.Open();
+                string query = $" select * from report where Id = '{id}'";
+                var command = new MySqlCommand(query, conn);
+                var reportReader = command.ExecuteReader();
+                while (reportReader.Read())
+                {
+                    return new Report
+                    {
+                        Id = (int)reportReader["Id"],
+                        ReportContent = reportReader["ReportContent"].ToString(),
+                        PatientComplain = reportReader["PatientComplain"].ToString(),
+                        
+                        IsDeleted = Convert.ToBoolean(reportReader["IsDeleted"]),
+                    };
+                }
+            }
+            return null;
+        }
+        public Report UpdateReport(Report updatedReport)
+        {
+            using (MySqlConnection conn = new MySqlConnection(DentalLabDbContext.connections))
+            {
+                conn.Open();
+                string query = $"UPDATE report SET ReportContent = '{updatedReport.ReportContent}', PatientComplain = '{updatedReport.PatientComplain}', IsDeleted = '{updatedReport.IsDeleted}' WHERE Id = '{updatedReport.Id}'";
+
+                var command = new MySqlCommand(query, conn);
+
+                var reportUpdate = command.ExecuteNonQuery();
+                if (reportUpdate > 0)
+                {
+                    new Report
+                    {
+                        ReportContent = updatedReport.ReportContent,
+                        PatientComplain = updatedReport.PatientComplain,
+                    };
+                }
+                return null;
+            }
+        }
+
+
         public Report GetByCardNo(string cardNo)
         {
             using (MySqlConnection conn = new(DentalLabDbContext.connections))
@@ -88,6 +134,28 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
                     {
                         Id = (int)reportReader["Id"],
                         ReportContent = reportReader["ReportContent"].ToString(),
+                        IsDeleted = Convert.ToBoolean(reportReader["IsDeleted"]),
+                    };
+                }
+            }
+            return null;
+        }
+
+        public Report GetAppointmentById(int id)
+        {
+            using (MySqlConnection conn = new(DentalLabDbContext.connections))
+            {
+                conn.Open();
+                string query = $" select * from report where AppointmentId = '{id}'";
+                var command = new MySqlCommand(query, conn);
+                var reportReader = command.ExecuteReader();
+                while (reportReader.Read())
+                {
+                    return new Report
+                    {
+                        Id = (int)reportReader["Id"],
+                        ReportContent = reportReader["ReportContent"].ToString(),
+                        PatientComplain = reportReader["PatientComplain"].ToString(),
                         IsDeleted = Convert.ToBoolean(reportReader["IsDeleted"]),
                     };
                 }
@@ -115,27 +183,6 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
                 }
                 return reportList;
             }
-        }
-
-        public Report GetByEmail(string email)
-        {
-            using (MySqlConnection conn = new(DentalLabDbContext.connections))
-            {
-                conn.Open();
-                string query = $" select * from report where Email = '{email}'";
-                var command = new MySqlCommand(query, conn);
-                var reportReader = command.ExecuteReader();
-                while (reportReader.Read())
-                {
-                    return new Report
-                    {
-                        Id = (int)reportReader["Id"],
-                        ReportContent = reportReader["ReportContent"].ToString(),
-                        IsDeleted = Convert.ToBoolean(reportReader["IsDeleted"])
-                    };
-                }
-            }
-            return null;
         }
     }
 }

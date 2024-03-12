@@ -22,11 +22,12 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
         IProfileRepository _profileRepository = new ProfileRepository();      
         IPatientRepository _patientRepository = new PatientRepository(); 
         IDoctorRepository _doctorRepository = new DoctorRepository();
+        IAppointmentRepository _appointmentRepository = new AppointmentRepository();
                                                                             
         public ReportDto Create(ReportRequestModelDto reports)
         {
             var profile = _profileRepository.GetProfileByUserId(Main.LoggedInId);
-            var patient = _patientRepository.GetPatientByProfileId(profile.Id);     // am having exception
+            var patient = _patientRepository.GetPatientByProfileId(profile.Id);  
             
             var report = _reportRepository.Get(reports.RefNumber);
 
@@ -38,7 +39,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
 
             Report newReport = new Report()
             {
-                ReportContent = reports.ReportContent,     // more work needs to be done
+                ReportContent = reports.ReportContent, 
             };
             _reportRepository.Create(newReport);
 
@@ -68,19 +69,55 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
             var report = _reportRepository.GetByCardNo(cardNo);
             var profile = _profileRepository.GetProfileByUserId(Main.LoggedInId);
             var patient = _patientRepository.GetPatientByProfileId(profile.Id);
-            var doctor = _doctorRepository.GetById(report.Id); // not too sure if it will get it
+            var doctor = _doctorRepository.GetById(report.Id); 
             if (report != null && patient != null)
             {
                 return new ReportDto
                 {
                     ReportContent = report.ReportContent,
-                    DrName  = doctor.LicenseNumber,                  // report.DrName, // i still need to include the doctors name
-                    
+                    //DrName  = doctor.LicenseNumber, 
                 };
             }
             return null;
-
         }
+
+        public ReportDto GetReportByAppointmentId(int id)
+        {
+            var report = _reportRepository.GetReportByAppointmentId(id);
+            var appointment = _appointmentRepository.GetById(report.Id);
+            var profile = _profileRepository.GetProfileByUserId(Main.LoggedInId);
+            var patient = _patientRepository.GetPatientByProfileId(profile.Id);
+            //var doctor = _doctorRepository.GetById(report.Id);
+            if (report != null && patient != null)
+            {
+                return new ReportDto
+                {
+                    ReportContent = report.ReportContent,
+                    PatientComplaint = report.PatientComplain,
+                    RefNumber = appointment.RefNumber,
+                };
+            }
+            return null;
+        }
+
+        public ReportDto Update(ReportDto report)
+        {
+            var existingReportDto = _reportRepository.GetReportByAppointmentId(report.Id);
+            if (existingReportDto != null)
+            {
+
+                existingReportDto.ReportContent = report.ReportContent;
+                var reportRepo = _reportRepository.UpdateReport(existingReportDto);
+                var reportDtos = new ReportDto
+                {
+                    ReportContent = reportRepo.ReportContent,
+                    PatientComplaint = reportRepo.PatientComplain,
+                };
+                return reportDtos;
+            }
+            return null;
+        }
+
 
         public List<ReportDto> GetAll()
         {

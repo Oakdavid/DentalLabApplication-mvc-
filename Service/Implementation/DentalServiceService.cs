@@ -56,7 +56,7 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
         {
             var dentalService = _dentalServiceRepository.GetAllService();
             var listOfService = new List<DentalService>();
-            foreach (var service in listOfService)
+            foreach (var service in dentalService)
             {
                 if (service != null)
                 {
@@ -79,14 +79,13 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
             var existingService = _dentalServiceRepository.Get(dentalService.Id);
             if (existingService != null)
             {
-                existingService.Id = dentalService.Id;
                 existingService.Name = dentalService.Name;
                 existingService.Description = dentalService.Description;
                 existingService.Code = dentalService.Code;
                 existingService.Cost = dentalService.Cost;
 
-                _dentalServiceRepository.Update(dentalService);
-                return dentalService;
+                _dentalServiceRepository.Update(existingService);
+                return existingService;
             }
             return null;
         }

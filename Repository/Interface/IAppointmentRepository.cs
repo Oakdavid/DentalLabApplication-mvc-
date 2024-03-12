@@ -14,5 +14,10 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Interface
         public Appointment GetByPatientNo(int patientNo);
         List<Appointment> GetAll();
         Appointment GetLastId();
+        List<Appointment> GetAllInitialized();
+        public List<Appointment> GetAppointmentByDoctorId(int id);
+        bool UpdateAppointmentWithDoctorId(Appointment appointment);
+        Appointment GetById(int Id);
+        List<Appointment> GetAllAssignedAppointment();
     }
 }

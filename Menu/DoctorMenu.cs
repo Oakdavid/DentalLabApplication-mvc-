@@ -1,5 +1,6 @@
 ﻿using DentalLabConsoleApplicationWithAdo.Dto;
 using DentalLabConsoleApplicationWithAdo.Models.Entities;
+using DentalLabConsoleApplicationWithAdo.Models.Enum;
 using DentalLabConsoleApplicationWithAdo.Service.Implementation;
 using DentalLabConsoleApplicationWithAdo.Service.Interface;
 using Google.Protobuf;
@@ -23,13 +24,13 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
 
         public void Doctor()
         {
-            Console.WriteLine("Enter 1 to view to assigned Patient\nEnter 2 to view  assiged appointment " +
-                "\nEnter 3 to send report \nPress 4 to update specialization\nEnter 0 to go back to Main Menu");
+            Console.WriteLine("Enter 1 to view assigned Patient\nEnter 2 to view all appointment assigned " +
+                "\nEnter 3 to send report\nPress 4 to update specialization\nEnter 0 to go back to Main Menu");
             string options = Console.ReadLine();
 
             if (options == "1")
             {
-                ViewAllPatient();
+                ViewAllAssignedPatient();
                 Doctor();
                 Console.WriteLine();
 
@@ -43,7 +44,7 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
 
             else if (options == "3")
             {
-                Report();
+                SendReport();
                 Doctor();
             }
 
@@ -96,10 +97,23 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
 
 
             Console.WriteLine();
-            Console.WriteLine("Enter your Gender");
-            string gender = Console.ReadLine();
+            Console.WriteLine("Enter 1 for Male\nEnter 2 for Female");
+            int userInput = int.Parse(Console.ReadLine());
+            Gender gender = Gender.Male;
 
-            
+            if (userInput == 1)
+            {
+                gender = Gender.Male;
+            }
+            else if (userInput == 2)
+            {
+                gender = Gender.Female;
+            }
+            else
+            {
+                Console.WriteLine("Enter the valid number");
+            }
+            Console.WriteLine();
 
             Console.WriteLine("Enter your email");
             string email = Console.ReadLine();
@@ -129,10 +143,8 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
                 Address = address,
                 Contact = contact,
                 DateOfBirth = dateOfBirth,
-                Gender = Models.Enum.Gender.Male,
+                Gender = gender,
                 SpecializationDescription = specializationDescription,
-                
-                
                 Email = email,
                 Password = password,
                 LicenseNumber = licenseNumber,
@@ -142,9 +154,11 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
             };
             _doctorService.Create(doctorRequestRegistrationDto);
         }
-        public void ViewAllPatient()
+        public void ViewAllAssignedPatient()
         {
             var allPatient = _patientService.GetAll();
+            var allPatients = _appointmentService.GetAllInitialized();
+
             if(allPatient == null)
             {
                 Console.WriteLine("No Patient available at this time");
@@ -158,29 +172,58 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
 
         public void ViewAllAppointment()
         {
-            var allAppointment = _appointmentService.GetAll();
+            var allAppointment = _appointmentService.GetAppointmentByDoctorId(Main.LoggedInId);
             foreach (var appointment in allAppointment)
             {
+                var patient = _patientService.GetById(appointment.PatientId.Value);
+                appointment.CardNo = patient.PatientCardNo;
                 _appointmentService.ToString(appointment);
+                Console.WriteLine($"Id: {appointment.Id} \t {appointment.DateOfAppointment}\tAppointmentType: {appointment.AppointmentType}\t");
             }
         }
 
-        public void Report()
+        public void SendReport()
         {
-            Console.WriteLine("Enter report context");
-            string reportContent = Console.ReadLine();
-
-            ReportRequestModelDto reportRequestModelDto = new ReportRequestModelDto()
+            var getAppointmentDoctorId = _appointmentService.GetAppointmentByDoctorId(Main.LoggedInId);
+            foreach(var doctor in getAppointmentDoctorId)
             {
-            
-                ReportContent = reportContent,
-                //public string RefNumber { get; set; }
-                //public string DrName { get; set; }
-                //public string PatientCardNo { get; set; }
-            };
-            _reportService.Create(reportRequestModelDto);       // which user am i giving a report too
-            Console.WriteLine();
+                Console.WriteLine($" Id:{doctor.Id}\t doctorId:{doctor.DoctorId}\tPatient Name: { doctor.PatientName} Id:{doctor.Id}");
+            }
+            Console.WriteLine("Enter the appointment Id");
+            int no = int.Parse( Console.ReadLine());
+
+            var report = _reportService.GetReportByAppointmentId(no);
+            if(report != null)
+            {
+                Console.WriteLine(report.PatientComplaint);
+                Console.WriteLine("Enter Report Content");
+                string content = Console.ReadLine();
+
+                var newReport = new ReportDto()
+                {
+                    PatientComplaint = report.PatientComplaint,
+                    ReportContent = content,
+                };
+                 _reportService.Update(newReport);
+            }
         }
+
+        //public void Report()
+        //{
+        //    Console.WriteLine("Enter report context");
+        //    string reportContent = Console.ReadLine();
+
+        //    ReportRequestModelDto reportRequestModelDto = new ReportRequestModelDto()
+        //    {
+            
+        //        ReportContent = reportContent,
+        //        //public string RefNumber { get; set; }
+        //        //public string DrName { get; set; }
+        //        //public string PatientCardNo { get; set; }
+        //    };
+        //    _reportService.Create(reportRequestModelDto);
+        //    Console.WriteLine();
+        //}
 
         public void UpdateSpecializations()
         {

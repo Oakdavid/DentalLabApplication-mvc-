@@ -25,7 +25,7 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
                 var input = command.ExecuteNonQuery();
                 if (input > 0)
                 {
-                    Console.WriteLine("Dental Service created successfully");
+                   // Console.WriteLine("Dental Service created successfully");
                     return dentalService;
                 }
                 else
@@ -73,7 +73,7 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
                     {
                         Id = (int)serviceReader["Id"],
                         Name = serviceReader["Name"].ToString(),
-                        Description = serviceReader["Name"].ToString(),
+                        Description = serviceReader["Description"].ToString(),
                         Code = serviceReader["Code"].ToString(),
                         Cost = serviceReader.GetDecimal(serviceReader.GetOrdinal("Cost")),
                         IsDeleted = false,
@@ -89,7 +89,7 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
             using (MySqlConnection conn = new(DentalLabDbContext.connections))
             {
                 conn.Open();
-                string query = $"update DentalService set Id = '{dentalService.Id}', Name = '{dentalService.Name}', Description = '{dentalService.Description}', Code = '{dentalService.Code}'," +
+                string query = $"update DentalService set  Name = '{dentalService.Name}', Description = '{dentalService.Description}', Code = '{dentalService.Code}'," +
                     $" Cost = '{dentalService.Cost}', IsDeleted = '{tinyIsDeleted}' where Id = '{dentalService.Id}'";
 
                 var command = new MySqlCommand(query, conn);
@@ -99,7 +99,6 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
                 {
                     new DentalService
                     {
-                        Id = dentalService.Id,
                         Name = dentalService.Name,
                         Description = dentalService.Description,
                         Code = dentalService.Code,
@@ -111,5 +110,10 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
                 return null;
             }
         }
+
+        //public DentalService Update(int id)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

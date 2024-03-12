@@ -18,7 +18,7 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
         public void MainMenu()
         {
             Console.WriteLine("------------WELCOME TO RDT DENTAL LABORATORY -------------");
-            Console.WriteLine("Press 1 to Register as a Patient\nPress 2 to Register as a Doctor \nPress 3 to login\nPress 4 to login as the HeadDoctor");
+            Console.WriteLine("Press 1 to Register as a Patient\nPress 2 to Register as a Doctor \nPress 3 to login");
             int options = int.Parse(Console.ReadLine());
             if (options == 1)
             {
@@ -36,10 +36,10 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
             {
                 LoginMenu();
             }
-            else if (options == 4)
-            {
-                LoginMenu();
-            }
+            //else if (options == 4)
+            //{
+            //    LoginMenu();
+            //}
             else
             {
                 Console.WriteLine("Enter valid number");
@@ -81,10 +81,10 @@ namespace DentalLabConsoleApplicationWithAdo.Menu
                         Console.WriteLine("login successfully");
 
                     }
-                    else if (response.Role == "Head Doctor")            // pending work to do
+                    else if (response.Role == "Head Doctor") 
                     {
-                        DoctorMenu doctorMenu = new DoctorMenu();
-                        doctorMenu.Doctor();
+                        HeadDoctorMenu doctorMenu = new HeadDoctorMenu();
+                        doctorMenu.HeadDoctor();
                     }
 
                     {

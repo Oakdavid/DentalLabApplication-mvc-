@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
 {
-    internal class PatientRepository : IPatientRepository
+    public class PatientRepository : IPatientRepository
     {
         public void Create(Patient obj)
         {
@@ -61,8 +61,6 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
             }
             return null;
         }
-      
-
         public List<Patient> GetAll()
         {
             using (MySqlConnection conn = new(DentalLabDbContext.connections))

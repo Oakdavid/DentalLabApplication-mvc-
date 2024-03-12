@@ -22,7 +22,7 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
             using (MySqlConnection conn = new(DentalLabDbContext.connections))
             {
                 conn.Open();
-                string insertQuery = $"INSERT INTO doctor (LicenseNumber,ProfileId, Education, YearsOfExperience, Specializations,SpecializationDescription, IsDeleted) " +
+                string insertQuery = $"INSERT INTO doctor (LicenseNumber,ProfileId, Education, YearsOfExperience, Specializations,SpecializationDescription, IsAvailable, IsDeleted) " +
                 $"VALUES ('{doctor.LicenseNumber}', '{doctor.ProfileId}','{doctor.Education}', '{doctor.YearsOfExperience}'," +
                 $"'{doctor.Specializations}', '{doctor.SpecializationDescription}', '{isAvailable}', '{tinyDeleted}')";
 
@@ -205,16 +205,15 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
             return null;
         }
 
-
-
         public bool Update(Doctor doctor)
         {
+            var isAvailable = doctor.IsAvailable ? 1 : 0;  // just added
             var tinyIsDeleted = doctor.IsDeleted ? 1 : 0;
             using (MySqlConnection conn = new(DentalLabDbContext.connections))
             {
                 conn.Open();
-                string query = $"update doctor set LicenseNumber = '{doctor.LicenseNumber}', Education = '{doctor.Education}', YearsOfExperience = '{doctor.YearsOfExperience}', Specializations = '{doctor.Specializations}'," +
-                    $" SpecializationDescription = '{doctor.SpecializationDescription}', IsDeleted = '{tinyIsDeleted}' where Id = '{doctor.Id}'";
+                string query = $"update doctor set LicenseNumber = '{doctor.LicenseNumber}', Education = '{doctor.Education}', YearsOfExperience = '{doctor.YearsOfExperience}', Specializations = '{doctor.Specializations}',"
+                               + $" SpecializationDescription = '{doctor.SpecializationDescription}', IsAvailable = '{isAvailable}', IsDeleted = '{tinyIsDeleted}' where Id = '{doctor.Id}'";
 
                 var command = new MySqlCommand (query, conn);
 
@@ -231,6 +230,29 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
                         SpecializationDescription = doctor.SpecializationDescription,
                         ProfileId = (int)doctor.ProfileId,
                         IsDeleted = Convert.ToBoolean(tinyIsDeleted),
+                    };
+                    return true;
+                }
+            }
+            return false;
+        }
+        public bool UpdateDoctorStatus(Doctor doctor)
+         {
+
+            var isAvailable = doctor.IsAvailable ? 1 : 0;
+            using (MySqlConnection conn = new(DentalLabDbContext.connections))
+            {
+                conn.Open();
+                string query = $"update doctor set IsAvailable = '{isAvailable}' where Id = '{doctor.Id}'";
+
+                var command = new MySqlCommand (query, conn);
+
+                var doctorUpdate = command.ExecuteNonQuery();
+                if (doctorUpdate > 0)
+                {
+                    new Doctor
+                    {
+                        Id = doctor.Id,
                     };
                     return true;
                 }

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DentalLabConsoleApplicationWithAdo")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b14f61520f99f407e4f4d549d32b3e671ee980f7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+55bc2e8ecf392ff975650d5402d2109ac0429de3")]
 [assembly: System.Reflection.AssemblyProductAttribute("DentalLabConsoleApplicationWithAdo")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DentalLabConsoleApplicationWithAdo")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

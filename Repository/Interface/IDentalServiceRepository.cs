@@ -11,6 +11,7 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Interface
     {
         DentalService Create(DentalService dentalService);
         DentalService Update(DentalService dentalService);
+        //DentalService Update(int id);
         DentalService Get(int id);
         IEnumerable<DentalService> GetAllService();
     }

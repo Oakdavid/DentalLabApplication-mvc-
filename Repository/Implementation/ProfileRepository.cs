@@ -12,7 +12,6 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
 {
     internal class ProfileRepository : IProfileRepository
     {
-
         public void Create(Profile profile)
         {
             var tinyDeleted = profile.IsDeleted ? 1 : 0;
@@ -63,7 +62,6 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Implementation
             }
             return null;
         }
-
         public Profile Get(string email)
         {
             using (MySqlConnection conn = new(DentalLabDbContext.connections))

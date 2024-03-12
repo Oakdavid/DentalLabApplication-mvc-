@@ -17,6 +17,6 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Interface
         PatientDto GetPatientId(int id);
         List<PatientDto> GetAll();
         public void ToString(PatientDto patient);
-
+        PatientDto GetById(int id);
     }
 }

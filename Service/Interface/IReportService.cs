@@ -12,10 +12,10 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Interface
     public interface IReportService
     {
         ReportDto Create(ReportRequestModelDto report);
-        //ReportDto CreatePdfReport(ReportRequestModelDto report);
         ReportDto Get(string refNumber);
         List<ReportDto> GetAll();
         bool Delete(string refNumber);
-
+        ReportDto GetReportByAppointmentId(int id);
+        ReportDto Update(ReportDto report);
     }
 }

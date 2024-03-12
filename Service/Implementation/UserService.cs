@@ -88,8 +88,6 @@ namespace DentalLabConsoleApplicationWithAdo.Service.Implementation
                 Console.WriteLine($" error: {ex.Message}" );
                 return null;
             }
-            
-
         }
     }
 }

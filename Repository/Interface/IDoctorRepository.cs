@@ -17,6 +17,6 @@ namespace DentalLabConsoleApplicationWithAdo.Repository.Interface
         List<Doctor> GetAllAvailableDoctors();
         List<Doctor> GetDoctorSpecialization(string specialization);
         bool Update(Doctor doctor);
-
+        bool UpdateDoctorStatus(Doctor doctor);
     }
 }
